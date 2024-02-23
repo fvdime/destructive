@@ -1,0 +1,81 @@
+.container{
+  height: 300vh;
+  position: relative;
+  background: #D8D7D3;
+  .wrapper{
+    position: sticky;
+    overflow: hidden;
+    top: 0;
+    height: 100vh;
+
+      .imageWrapper{
+        width: 100%;
+        height: 100%;
+        top: 0;
+        position: absolute;
+        display: flex;          
+        align-items: center;
+        justify-content: center;
+        .imageContainer{
+          position: relative;
+          width: 25vw;
+          height: 25vh;
+          img{
+            object-fit: cover;
+          }
+        }
+        &:nth-of-type(2){
+          .imageContainer{
+            top: -30vh;
+            left: 5vw;
+            width: 35vw;
+            height: 30vh;
+          }
+       }
+       &:nth-of-type(3){
+          .imageContainer{
+            top: -10vh;
+            left: -25vw;
+            width: 20vw;
+            height: 45vh;
+          }
+        }
+       &:nth-of-type(4){
+          .imageContainer{
+            left: 27.5vw;
+            width: 25vw;
+            height: 25vh;
+          }
+        }
+       &:nth-of-type(5){
+          .imageContainer{
+            top: 30vh;
+            left: 5vw;
+            width: 20vw;
+            height: 20vh;
+          }
+        }
+       &:nth-of-type(6){
+          .imageContainer{
+            top: 30vh;
+            left: -22.5vw;
+            width: 30vw;
+            height: 20vh;
+          }
+        }
+        &:nth-of-type(7){
+          .imageContainer{
+            top: 22.5vh;
+            left: 25vw;
+            width: 15vw;
+            height: 15vh;
+          }
+        }
+        .con{
+          height: 100vh;
+          background: #946a6a;
+        }
+    }
+  }
+
+}

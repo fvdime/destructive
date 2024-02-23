@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String?
+  username         String   @unique
+  email            String   @unique
+  password         String
+  bio              String?
+  profilePic       String?
+  followingIds     String[] @db.ObjectId
+  hasNotifications Boolean?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  post          Post[]
+  comment       Comment[]
+  bookmark      Bookmark[]
+  notifications Notification[]
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  sentMessage     Message[] @relation("sender")
+  receivedMessage Message[] @relation("receiver")
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  image     String?
+  published Boolean  @default(true)
+  userId    String   @db.ObjectId
+  hashtags  String[] @default([])
+  likedIds  String[] @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  user     User       @relation(fields: [userId], references: [id])
+  bookmark Bookmark[]
+  comment  Comment[]
+  hashtag  Hashtag[]
+}
+
+model Hashtag {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  hashtag String
+  postId  String @db.ObjectId
+
+  user Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  comment String
+
+  userId   String  @db.ObjectId
+  postId   String  @db.ObjectId
+  parentId String? @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  parent   Comment?  @relation("children", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Comment[] @relation("children")
+}
+
+model Bookmark {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  postId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+
+  senderId   String   @db.ObjectId
+  receiverId String   @db.ObjectId
+  userIds    String[] @db.ObjectId
+
+  seen Boolean
+
+  createdAt DateTime @default(now())
+
+  users    User[]    @relation(fields: [userIds], references: [id])
+  messages Message[]
+}
+
+model Message {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+  image   String?
+
+  conversationId String @db.ObjectId
+  senderId       String @db.ObjectId
+  receiverId     String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  sender       User         @relation("sender", fields: [senderId], references: [id])
+  receiver     User         @relation("receiver", fields: [receiverId], references: [id])
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+}
