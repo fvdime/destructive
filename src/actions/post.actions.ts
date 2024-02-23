@@ -145,7 +145,14 @@ export const updatePost = async ({ formData, id, path }: { formData: FormData; i
 export const getSinglePost = async (id: any) => {
   try {
     const post = await prisma.post.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        user: true,
+        comment: { 
+          include: { user: true }, 
+          orderBy: { createdAt: 'desc' } 
+        }
+      }
     })
     return post
   } catch (error) {
