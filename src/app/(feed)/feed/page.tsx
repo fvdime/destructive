@@ -1,10 +1,15 @@
+import Navbar from '@/components/feed/navbar'
 import Post from '@/components/feed/post'
 import React from 'react'
 
 export default function FeedPage() {
   return (
-    <div className='w-full h-full'>
+    <>
+      <Navbar label='Home'/>
       <Post/>
-    </div>
+      <Post/>
+      <Post/>
+      <Post/>
+    </>
   )
 }

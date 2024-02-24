@@ -2,6 +2,10 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import ImageUploadInput from "../shared/image-input";
+import Input from "../shared/input";
+import Link from "next/link";
+import Button from "../shared/button";
 
 interface PostFormProps {
   type?: "Create" | "Update";
@@ -12,6 +16,8 @@ export default function PostModal({ type }: PostFormProps) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const [value, setValue] = useState("");
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -29,37 +35,21 @@ export default function PostModal({ type }: PostFormProps) {
 
   const BodyContent = (
     <div className="flex flex-col gap-4">
-      {/* <div className='relative cursor-pointer hover:opacity-50 transition duration-200 ease-in border-dashed border-2 p-20 flex flex-col border-slate-600 justify-center items-center text-slate-800'>
-        <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3h-2l-.447-.894A2 2 0 0 0 12.764 1H7.236a2 2 0 0 0-1.789 1.106L5 3H3a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a2 2 0 0 0-2-2Z"/>
-        </svg>
-      </div> */}
-      <input type="file" />
-      <textarea
-        name=""
-        id=""
-        cols={20}
-        rows={5}
-        className="border-b border-gray-300 p-2"
-        placeholder="write desc..."
-      ></textarea>
-      <input
-        type="text"
-        placeholder="hashtags"
-        className="border-b border-gray-300 p-2 "
-      />
-      <button
-        type="submit"
-        className="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-      >
-        Submit
-      </button>
+      <ImageUploadInput value={value} onChange={(value) => setValue(value)} />
+      <div className="relative w-full min-w-[200px]">
+        <textarea
+          placeholder="Description"
+          className="peer h-full min-h-[100px] w-full resize-none border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+        ></textarea>
+        <label className="after:content[' '] pointer-events-none absolute left-0 -top-1 flex h-full w-full select-none text-sm font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-900 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500"></label>
+      </div>
+      <Input placeholder="Hashtags" />
+      <Button label="Share" fullWidth large />
     </div>
   );
 
   const FooterContent = (
-    <div className="text-gray-400 text-center mt-1">
+    <div className="text-gray-400 text-center mt-4">
       <p>
         I agree with the
         <span className="text-sky-700 cursor-pointer hover:underline">
@@ -100,7 +90,7 @@ export default function PostModal({ type }: PostFormProps) {
 
       <div
         ref={wrapper}
-        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto"
+        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 py-16 overflow-auto"
       >
         {BodyContent}
         {FooterContent}

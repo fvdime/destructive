@@ -10,7 +10,7 @@
 }
 
 .wrapper {
-  background: linear-gradient(-45deg, #353535, #0c0c0c, #1B1B1B, #313131);
+  background: linear-gradient(-45deg, #131313, #353535, #111111, #313131);
   background-size: 400% 400%;
   animation: gradient 25s ease infinite;
 }

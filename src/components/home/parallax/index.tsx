@@ -27,7 +27,7 @@ export default function Index() {
 
   // console.log("Scroll Position:", scrollYProgress); // Log scroll position for debugging
 
-  const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
+  const scale4 = useTransform(scrollYProgress, [0, 1], [1, 3]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
   const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
   const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
@@ -41,32 +41,32 @@ export default function Index() {
     },
     {
       id: 2,
-      src: "atsushi4.jpg",
+      src: "f.jpg",
       scale: scale5,
     },
     {
       id: 3,
-      src: "atsushi3.jpg",
+      src: "j.jpg",
       scale: scale6,
     },
     {
       id: 4,
-      src: "atsushi4.jpg",
+      src: "k.jpg",
       scale: scale5,
     },
     {
       id: 5,
-      src: "atsushi3.jpg",
+      src: "j.jpg",
       scale: scale6,
     },
     {
       id: 6,
-      src: "atsushi4.jpg",
+      src: "g.jpg",
       scale: scale8,
     },
     {
       id: 7,
-      src: "atsushi3.jpg",
+      src: "l.jpg",
       scale: scale9,
     },
   ];
@@ -84,11 +84,16 @@ export default function Index() {
               <div className={styles.imageContainer}>
                 {id === 1 ? (
                   <video autoPlay loop muted>
-                    <source src={`/${src}`} type="video/mp4"/>
+                    <source src={`/${src}`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
-                  <Image src={`/${src}`} fill alt="image" />
+                  <Image
+                    className="rounded-md"
+                    src={`/${src}`}
+                    fill
+                    alt="image"
+                  />
                 )}
               </div>
             </motion.div>

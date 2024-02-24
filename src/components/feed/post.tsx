@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const Post = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full mb-4 px-2">
       <div className="flex flex-col gap-1">
-        <div className="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-xl border dark:bg-gray-700 dark:border-gray-800 dark:hover:border-gray-900">
+        <div className="flex flex-col w-full leading-1.5 p-4 border-gray-100 bg-gray-50 rounded-xl border">
           <div className="flex items-center space-x-2 rtl:space-x-reverse mb-2">
             <Link href="user/1">
             <Image
@@ -19,19 +19,17 @@ const Post = () => {
             </Link>
             <div className="w-full h-full flex flex-row justify-between items-center">
                <Link href="user/1">
-                  <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  <span className="text-sm font-semibold text-gray-900">
                   Bonnie Green
                   </span>
                </Link>
-
-               <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+               <span className="text-sm font-normal text-gray-500">
                11:46
                </span>
-
             </div>
           </div>
           <Link href="feed/1">
-            <p className="text-sm font-normal text-gray-900 dark:text-white">
+            <p className="text-sm font-normal text-gray-900">
                This is the new office
             </p>
           </Link>
