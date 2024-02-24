@@ -1,3 +1,4 @@
+import Layout from "@/components/shared/layout";
 import React from "react";
 
 export default function UserLayout({
@@ -5,5 +6,9 @@ export default function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div>{children}</div>;
+  return (
+    <>
+      <Layout>{children}</Layout>
+    </>
+  );
 }

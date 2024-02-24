@@ -18,8 +18,8 @@
         justify-content: center;
         .imageContainer{
           position: relative;
-          width: 25vw;
-          height: 25vh;
+          width: 35vw;
+          height: 35vh;
           img{
             object-fit: cover;
           }
@@ -27,48 +27,48 @@
         &:nth-of-type(2){
           .imageContainer{
             top: -30vh;
-            left: 5vw;
-            width: 35vw;
-            height: 30vh;
+            left: 35vw;
+            width: 25vw;
+            height: 25vh;
           }
        }
        &:nth-of-type(3){
           .imageContainer{
-            top: -10vh;
-            left: -25vw;
+            top: -25vh;
+            left: -35vw;
             width: 20vw;
             height: 45vh;
           }
         }
        &:nth-of-type(4){
           .imageContainer{
-            left: 27.5vw;
-            width: 25vw;
-            height: 25vh;
+            left: 30vw;
+            width: 20vw;
+            height: 30vh;
           }
         }
        &:nth-of-type(5){
           .imageContainer{
             top: 30vh;
-            left: 5vw;
-            width: 20vw;
+            left: 35vw;
+            width: 15vw;
             height: 20vh;
           }
         }
        &:nth-of-type(6){
           .imageContainer{
-            top: 30vh;
-            left: -22.5vw;
-            width: 30vw;
+            top: 17.5vh;
+            left: -32.5vw;
+            width: 25vw;
             height: 20vh;
           }
         }
         &:nth-of-type(7){
           .imageContainer{
-            top: 22.5vh;
-            left: 25vw;
-            width: 15vw;
-            height: 15vh;
+            top: -35vh;
+            left: 5vw;
+            width: 25vw;
+            height: 25vh;
           }
         }
         .con{

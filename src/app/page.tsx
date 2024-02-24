@@ -8,7 +8,8 @@ export default function Home() {
   return (
     <>
       <HeroBanner />
-      {/* <Parallax /> */}
+      <Parallax />
+      <div className="h-screen bg-red-400"></div>
       <About/>
       <Footer />
     </>
