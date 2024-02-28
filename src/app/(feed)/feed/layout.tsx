@@ -7,5 +7,5 @@ export default function FeedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div><Layout>{children}</Layout></div>;
+  return <div className="bg-gray-50 w-full h-full"><Layout>{children}</Layout></div>;
 }

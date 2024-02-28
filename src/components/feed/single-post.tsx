@@ -5,7 +5,7 @@ import Link from "next/link";
 const SinglePost = () => {
   return (
     <>
-      <main className="py-4 lg:py-8 antialiased w-full h-full">
+      <main className="p-4 lg:py-8 antialiased w-full h-full">
         <div className="w-full h-full flex flex-col gap-2">
           <div className="flex items-center not-italic flex-row justify-between w-full ">
             <div className="flex items-center gap-2">

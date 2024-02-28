@@ -3,14 +3,15 @@ import CommentForm from "@/components/forms/comment-form";
 import Comment from '@/components/feed/comment'
 import React from "react";
 import Navbar from "@/components/feed/navbar";
+import PostModal from "@/components/feed/modals/post-modal";
 
 export default function PostPage() {
   return (
     <>
-      <Navbar label='Post'/>
-      <SinglePost />
+      {/* <SinglePost />
       <CommentForm/>
-      <Comment/>
+      <Comment/> */}
+      <PostModal/>
     </>
   );
 }
