@@ -5,7 +5,6 @@ import React from 'react'
 export default function FeedPage() {
   return (
     <>
-      <Navbar label='Home'/>
       <Post/>
       <Post/>
       <Post/>

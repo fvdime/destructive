@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Comment = () => {
   return (
-    <div className="p-6 mb-4">
+    <div className="px-2 mb-4">
       <footer className="flex justify-between items-center mb-2">
         <div className="flex items-center flex-row gap-2">
           <Link href="user/1">

@@ -1,37 +1,56 @@
 "use client";
 
-import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import React, { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
 
-const Navbar = ({
-  showBackArrow,
-  label,
-}: {
-  showBackArrow?: any;
-  label: string;
-}) => {
-  const router = useRouter();
+const Navbar = () => {
+  const lampRef = useRef<HTMLDivElement>(null);
 
-  const handleBack = useCallback(() => {
-    router.back();
-  }, [router]);
+  useEffect(() => {
+    const lamp = lampRef.current;
+
+    if (!lamp) {
+      return
+    }
+
+    const pieces = Array.from(lamp.children);
+
+    const handleMouseMove = (event: any) => {
+      const { clientX, clientY } = event;
+
+      pieces.forEach(piece => {
+        const rect = piece.getBoundingClientRect();
+        const dx = clientX - (rect.left + rect.width / 2);
+        const dy = clientY - (rect.top + rect.height / 2);
+        const angle = Math.atan2(dy, dx);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        gsap.to(piece, {
+          x: Math.cos(angle) * distance * 0.1,
+          y: Math.sin(angle) * distance * 0.1,
+          rotation: angle + 'rad',
+          duration: 0.5,
+          ease: 'power3',
+        });
+      });
+    };
+
+    lamp.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      lamp.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
   return (
-    <div className="border-b border-neutral-800 px-2 pb-2">
-      <div className="flex flex-row items-center justify-between w-full gap-2">
-        <div className="flex flex-row items-center gap-2">
-          <button
-            onClick={handleBack}
-            className="cursor-pointer hover:opacity-70 transition text-2xl font-medium"
-          >
-            ←
-          </button>
-          <h1 className="text-lg font-semibold">{label}</h1>
-        </div>
-        <h1 className="text-3xl">✵</h1>
-      </div>
+    <div className="relative w-full h-screen bg-blue-400 lamp" ref={lampRef}>
+      <div className="piece"></div>
+      <div className="piece "></div>
+      <div className="piece absolute w-16 h-16 rounded-full bg-red-900 pointer-events-none"></div>
+    
+      <div className="absolute w-16 h-16 rounded-full bg-red-900 pointer-events-none ball" />
     </div>
-  );
+  )
 };
 
 export default Navbar;

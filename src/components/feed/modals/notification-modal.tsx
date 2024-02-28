@@ -1,0 +1,96 @@
+"use client";
+
+import React, { useState, useRef, useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation"
+
+export default function NotificationModal() {
+
+  const pathname = usePathname();
+  const overlay = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const [value, setValue] = useState("");
+
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
+
+  //for exiting when you click anywhere except the white part
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === overlay.current && onDismiss) {
+        onDismiss();
+      }
+    },
+    [onDismiss, overlay]
+  );
+
+    const BodyContent = (
+      <div className="flex flex-col gap-4">
+        <header className="w-full h-full">
+          <h1 className="uppercase font-medium">Notifications</h1>
+        </header>
+    <div className="flex flex-col">
+      <div className="flex flex-row items-center p-2 gap-4 border-b">
+        <h1 className="text-5xl">✵⁠⁠</h1>
+        <p className="text-sm">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
+        </p>
+      </div>
+      <div className="flex flex-row items-center p-2 gap-4 border-b">
+        <h1 className="text-5xl">✵⁠⁠</h1>
+        <p className="text-sm">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
+        </p>
+      </div>
+      <div className="flex flex-row items-center p-2 gap-4 border-b ">
+        <h1 className="text-5xl">✵⁠⁠</h1>
+        <p className="text-sm">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
+        </p>
+      </div>
+    </div> 
+    
+      </div>
+    );
+  
+  
+    return (
+      <div
+        ref={overlay}
+        className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80"
+        onClick={handleClick}
+      >
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="absolute top-2 right-8 text-white/80 hover:text-white/20 duration-500 transition-all ease-in"
+        >
+          <svg
+            className="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+        </button>
+  
+        <div
+          ref={wrapper}
+          className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 py-16 overflow-auto"
+        >
+          {BodyContent}
+        </div>
+      </div>
+    );
+  }
+  
