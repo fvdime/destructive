@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache'
 import { signToken } from "@/libs/token"
 
 const authSchema = z.object({
-  username: z.string().min(1),
+  username: z.string().min(1).nullish(),
   password: z.string().min(6),
   email: z
     .string()
@@ -68,7 +68,6 @@ export const loginUser = async (formData: FormData) => {
 
   console.log(isValidData.email, isValidData.password)
 
-  console.log(isValidData.email, isValidData.password)
   try {
     if (!isValidData.email || !isValidData.password) {
       return new NextResponse("Missing Credentials!", { status: 400 })
