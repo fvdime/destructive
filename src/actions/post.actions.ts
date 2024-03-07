@@ -8,28 +8,28 @@ import { revalidatePath } from 'next/cache'
 import { getToken, getUserIdFromToken } from "@/libs/sign-token";;
 
 const postSchema = z.object({
-  title: z.string().min(1),
   content: z.string().min(1),
   hashtag: z.string().nullish()
 });
 
-export const createPost = async ({ formData, path }: { formData: FormData; path: string }) => {
+export const createPost = async ({ formData, path }: { formData: FormData, path: string }) => {
 
   try {
     const isValidData = postSchema.parse({
-      title: formData.get('title'),
       content: formData.get('content'),
       hashtag: formData.get('hashtag'),
     });
 
     console.log(isValidData);
 
-    const tokens = getToken()
-    console.log("token:::::::::::::::::", tokens)
+    const token = getToken()
+    console.log("token:::::::::::::::::", token)
 
-    const userId = getUserIdFromToken(tokens) as string
+    const userId = getUserIdFromToken(token) as string
 
-    const user = await GetUserById(userId);
+    const user = await GetUserById(userId)
+
+    if (!user) return { error: "User not found" };
     // console.log(author)
 
     if (!user) {
@@ -52,7 +52,6 @@ export const createPost = async ({ formData, path }: { formData: FormData; path:
 
     const post = await prisma.post.create({
       data: {
-        title: isValidData.title,
         image: filePath,
         hashtags: hashtags || [],
         content: isValidData.content,
@@ -64,7 +63,7 @@ export const createPost = async ({ formData, path }: { formData: FormData; path:
     });
 
     console.log("Created Post!", post);
-    revalidatePath(path)
+    revalidatePath(`${path}/${post.id}`)
 
     return post
   } catch (error) {
@@ -126,7 +125,6 @@ export const updatePost = async ({ formData, id, path }: { formData: FormData; i
         id: id,
       },
       data: {
-        title: isValidData.title,
         image: filePath,
         hashtags: hashtags || [],
         content: isValidData.content,

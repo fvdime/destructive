@@ -9,9 +9,9 @@ export default function Home() {
     <>
       <HeroBanner />
       {/* <Parallax /> */}
-      <About/>
+      {/* <About/>
       <TextSlide/>
-      <Footer />
+      <Footer /> */}
     </>
   );
 }

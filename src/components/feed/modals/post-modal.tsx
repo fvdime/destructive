@@ -1,20 +1,21 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import React, { useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/shared/button";
 import Image from "next/image";
 import Comment from "../comment";
 import CommentForm from "@/components/forms/comment-form";
+import { dateFormat } from "@/libs/date";
 
-export default function PostModal() {
-  const pathname = usePathname();
+export default function PostModal(post: any) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const [value, setValue] = useState("");
+  console.log(post.isOwn);
+  const date = dateFormat(post.post.createdAt);
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -36,23 +37,39 @@ export default function PostModal() {
         <div className="w-full h-full flex flex-col gap-2">
           <div className="flex items-center not-italic flex-row justify-between w-full ">
             <div className="flex items-center gap-2">
-              <Link href="user/1">
-                <Image
-                  height={32}
-                  width={32}
-                  className="w-8 h-8 rounded-full object-cover "
-                  src="/atsushi3.jpg"
-                  alt="profile image"
-                />
-              </Link>
-              <Link href="user/1" className="font-semibold text-lg">
-                User name
+              {post.post.user.profilePic ? (
+                <Link href={`/user/${post.post.user.id}`}>
+                  <Image
+                    height={32}
+                    width={32}
+                    className="w-8 h-8 rounded-full object-cover "
+                    src="/atsushi3.jpg"
+                    alt="profile image"
+                  />
+                </Link>
+              ) : (
+                <Link href={`/user/${post.post.user.id}`}>
+                  <Image
+                    height={32}
+                    width={32}
+                    className="w-8 h-8 rounded-full object-cover "
+                    src="/atsushi3.jpg"
+                    alt="profile image"
+                  />
+                </Link>
+              )}
+              <Link
+                href={`/user/${post.post.user.id}`}
+                className="font-semibold text-base mr-2"
+              >
+                {post.post.user.username}
               </Link>
             </div>
             <div>
-              <p className="text-sm text-gray-600">
-                <time>Feb 8, 2022</time>
-              </p>
+              <button type="button" className="text-sm text-gray-600 rotate-90">
+                ...
+                {/* <time>{date}</time> */}
+              </button>
             </div>
           </div>
           <div className="w-full h-[70vh] relative mt-2.5">
@@ -65,23 +82,21 @@ export default function PostModal() {
           </div>
           <div className="flex flex-row w-full">
             <h1 className="leading-tight text-sm">
-              <Link href="user/1" className="font-semibold text-base mr-2">
-                User name
-              </Link>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Accusamus odio! Lorem, ipsum dolor sit amet consectetur
-              adipisicing elit. Vel sapiente inventore totam excepturi delectus,
-              natus nesciunt ipsum dolore magnam illo aspernatur tempore nihil
-              quia dignissimos. Cumque eius veritatis bla
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex dicta non facilis fugiat ullam dolor assumenda perferendis laboriosam delectus fuga rem accusamus officia voluptates, hic iste cum ratione illo! Incidunt.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem placeat, facere saepe consectetur velit consequatur odit tenetur autem modi praesentium ratione repellendus doloremque rem, veniam nobis deleniti! Ut, reiciendis repudiandae.
-              nditiis? Eos.
+              <span className="font-semibold text-base mr-2">
+                {post.post.user.username}
+              </span>
+
+              {post.post.content}
             </h1>
           </div>
+          {/* <p className="text-sm text-gray-600">
+                {date}
+                {<time>{date}</time> 
+              </p> */}
         </div>
       </main>
-      <CommentForm/>
-      <Comment/>
+      <CommentForm />
+      <Comment />
     </div>
   );
 

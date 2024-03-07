@@ -27,14 +27,15 @@ const ImageUploadInput = ({ value, onChange }: ImageUploadProps) => {
   return (
     <div className="mb-6">
       <label
-        htmlFor="upload"
+        htmlFor="image"
         className="h-[50vh] md:h-[70vh] relative cursor-pointer hover:opacity-50 transition duration-200 ease-in border-dashed border-2 p-20 flex flex-col border-slate-600 justify-center items-center text-slate-800"
       >
         <input
-          id="upload"
+          id="image"
           type="file"
           accept="image/*"
           className="hidden"
+          name="image"
           onChange={handleUpload}
         />
         <svg
