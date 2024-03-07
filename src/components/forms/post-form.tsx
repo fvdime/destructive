@@ -1,18 +1,23 @@
 "use client";
 
 import React, { useState, useRef, useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useFormState } from "react-dom";
 import ImageUploadInput from "../shared/image-input";
 import Input from "../shared/input";
 import Link from "next/link";
 import Button from "../shared/button";
+import { createPost } from "@/actions/post.actions";
+import toast from "react-hot-toast";
 
 interface PostFormProps {
   type?: "Create" | "Update";
 }
 
 export default function PostModal({ type }: PostFormProps) {
-  const pathname = usePathname();
+  const [content, setContent] = useState("");
+  const [hashtag, setHashtag] = useState<string[]>([]);
+
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -33,18 +38,53 @@ export default function PostModal({ type }: PostFormProps) {
     [onDismiss, overlay]
   );
 
+  async function handleSubmit() {
+    try {
+      const input: any = document.getElementById("image");
+      var resultString = hashtag.join(",");
+
+      const path = "/feed";
+
+      const formData = new FormData();
+
+      formData.append("hashtag", resultString);
+      formData.append("image", input?.files[0]);
+      formData.append("content", content);
+
+      console.log("Form submitted with:", formData);
+
+      try {
+        const post = await createPost({ formData, path });
+        toast.success("Successfully Created!");
+
+        console.log("Response:", post);
+        router.push(`/feed/${post?.id}`)
+      } catch (error) {
+        router.refresh();
+        toast.error("Permission denied!");
+        console.error("Error:", error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const BodyContent = (
     <div className="flex flex-col gap-4">
       <ImageUploadInput value={value} onChange={(value) => setValue(value)} />
       <div className="relative w-full min-w-[200px]">
         <textarea
+          name="content"
+          id="content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           placeholder="Description"
           className="peer h-full min-h-[100px] w-full resize-none border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
         ></textarea>
         <label className="after:content[' '] pointer-events-none absolute left-0 -top-1 flex h-full w-full select-none text-sm font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-900 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500"></label>
       </div>
-      <Input placeholder="Hashtags" />
-      <Button label="Share" fullWidth large />
+      <Input id="hashtag" name="hashtag" placeholder="Hashtags" />
+      <Button label="Share" fullWidth large onClick={handleSubmit} />
     </div>
   );
 
