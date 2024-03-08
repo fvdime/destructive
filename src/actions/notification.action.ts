@@ -3,7 +3,7 @@
 import prisma from '@/libs/prisma'
 import { revalidatePath } from 'next/cache'
 
-export const getNotifications = async ({ userId, path }: { userId: any, path: string }) => {
+export const getNotifications = async (userId: string) => {
   try {
     if (!userId) {
       throw new Error('Invalid Id')

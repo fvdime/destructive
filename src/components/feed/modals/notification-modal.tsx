@@ -2,15 +2,15 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation"
+import { dateFormat } from "@/libs/date";
 
-export default function NotificationModal() {
-
-  const pathname = usePathname();
+export default function NotificationModal({notification}: { notification: any}) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const [value, setValue] = useState("");
+  // const timestamp = notification?.createdAt;
+  // const time = dateFormat(timestamp);
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -31,27 +31,22 @@ export default function NotificationModal() {
         <header className="w-full h-full">
           <h1 className="uppercase font-medium">Notifications</h1>
         </header>
-    <div className="flex flex-col">
-      <div className="flex flex-row items-center p-2 gap-4 border-b">
-        <h1 className="text-5xl">✵⁠⁠</h1>
-        <p className="text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
-        </p>
-      </div>
-      <div className="flex flex-row items-center p-2 gap-4 border-b">
-        <h1 className="text-5xl">✵⁠⁠</h1>
-        <p className="text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
-        </p>
-      </div>
-      <div className="flex flex-row items-center p-2 gap-4 border-b ">
-        <h1 className="text-5xl">✵⁠⁠</h1>
-        <p className="text-sm">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore, omnis aspernatur.
-        </p>
-      </div>
-    </div> 
-    
+        {notification.length > 0 ? (
+        <>
+          {notification.map((item: any) => (
+            <div className="flex flex-col" key={item.id}>
+            <div className="flex flex-row items-center p-2 gap-4 border-b">
+              <h1 className="text-5xl">✵⁠⁠</h1>
+              <p className="text-sm">
+                  {item.body}
+              </p>
+            </div>
+          </div> 
+          ))}
+        </>
+      ) : (
+        <span className="text-sm text-gray-600">No notifications yet</span>
+      )}  
       </div>
     );
   

@@ -1,10 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Button from "../shared/button";
+import { createComment } from "@/actions/comment.action";
+import toast from "react-hot-toast";
 
-const CommentForm = () => {
-  const handleSubmit = () => {};
+const CommentForm = ({ postId }: { postId: any }) => {
+  const [comment, setComment] = useState("")
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("comment", comment);
+    const path = `/feed/${postId}`
+
+    try {
+        const comment = await createComment({ formData, path, postId });
+        toast.success("Successfully Created!");
+
+        console.log("Response:", comment);
+      } catch (error) {
+        toast.error("Permission denied!");
+        console.error("Error:", error);
+      }
+  };
 
   return (
     <>
@@ -12,6 +30,10 @@ const CommentForm = () => {
       <form className="mb-6">
         <div className="relative w-full">
           <textarea
+          name="comment"
+          id="comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
             placeholder=" "
             className="peer h-full min-h-[100px] w-full resize-none border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:border-gray-900 focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
           ></textarea>

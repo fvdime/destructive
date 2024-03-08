@@ -1,33 +1,47 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getComments } from "@/actions/comment.action";
+import { dateFormat } from "@/libs/date";
 
-const Comment = () => {
+const Comment = async ({ item, isOwn }: { item: any; isOwn: boolean }) => {
+  const timeStamp = item?.createdAt;
+  const time = dateFormat(timeStamp);
+
   return (
-    <div className="px-2 mb-4">
-      <footer className="flex justify-between items-center mb-2">
+    <div className="px-2 pb-4 border-b" key={item.id}>
+      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center flex-row gap-2">
-          <Link href="user/1">
-            <Image
-              height={32}
-              width={32}
-              className="w-8 h-8 rounded-full object-cover "
-              src="/atsushi3.jpg"
-              alt="profile image"
-            />
+          {item.user.profilePic ? (
+            <Link href={`/user/${item.user.id}`}>
+              <Image
+                height={28}
+                width={28}
+                className="w-7 h-7 rounded-full object-cover "
+                src="/atsushi3.jpg"
+                alt="profile image"
+              />
+            </Link>
+          ) : (
+            <Link href={`/user/${item.user.id}`}>
+              <Image
+                height={28}
+                width={28}
+                className="w-7 h-7 rounded-full object-cover "
+                src="/atsushi3.jpg"
+                alt="profile image"
+              />
+            </Link>
+          )}
+          <Link href={`/user/${item.user.id}`}>
+            <p className="font-semibold text-sm">{item.user.username}</p>
           </Link>
-          <p className="font-semibold text-sm">Michael Gough</p>
         </div>
-        <p className="text-sm text-gray-400">
-          <time>Feb 8, 2022</time>
+        <p className="text-xs text-gray-600">
+          <time>{time}</time>
         </p>
-      </footer>
-      <p className="">
-        Very straight-to-point article. Really worth time reading. Thank you!
-        But tools are just the instruments for the UX designers. The knowledge
-        of the design tools are as important as the creation of the design
-        strategy.
-      </p>
+      </div>
+      <p>{item.comment}</p>
     </div>
   );
 };
