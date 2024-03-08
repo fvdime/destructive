@@ -1,22 +1,17 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import React, { useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/shared/button";
 import Image from "next/image";
-import Comment from "../comment";
-import CommentForm from "@/components/forms/comment-form";
 import UserBio from "../user-bio";
-import Post from "../post";
 
-export default function UserModal() {
-  const pathname = usePathname();
+export default function UserModal({user, isOwn}: { user: any, isOwn: boolean}) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const [value, setValue] = useState("");
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -34,79 +29,26 @@ export default function UserModal() {
 
   const BodyContent = (
     <div className="flex flex-col gap-4 w-full h-full max-w-screen-md mx-auto">
-      <UserBio />
+      <UserBio user={user} isOwn={isOwn}/>
       <div className="w-full h-full grid grid-cols-3 gap-2">
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-        <div className="h-64 w-full  relative">
-          <Link href="feed/1">
-              <Image
-                fill
-                alt="post image"
-                src="/atsushi4.jpg"
-                className="absolute object-cover"
-              />
-            </Link>
-        </div>
-
+      {user.post.length > 0 ? (
+        <>
+          {user.post.map((item: any) => (
+            <div className="h-64 w-full relative hover:brightness-75 duration-300 translation ease" key={item.id}>
+            <Link href={`/feed/${item.id}`}>
+                <Image
+                  fill
+                  alt="post image"
+                  src="/atsushi4.jpg"
+                  className="absolute object-cover"
+                />
+              </Link>
+          </div>
+          ))}
+        </>
+      ) : (
+        <span className="text-sm text-gray-600">No posts yet</span>
+      )}
       </div>
     </div>
   );

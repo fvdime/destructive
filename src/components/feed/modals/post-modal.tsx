@@ -9,13 +9,22 @@ import Comment from "../comment";
 import CommentForm from "@/components/forms/comment-form";
 import { dateFormat } from "@/libs/date";
 
-export default function PostModal(post: any) {
+export default function PostModal({
+  post,
+  comment,
+  isOwn,
+}: {
+  post: any;
+  comment: any;
+  isOwn: boolean;
+}) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  console.log(post.isOwn);
-  const date = dateFormat(post.post.createdAt);
+  console.log("IS OWNNNNNNN", isOwn);
+  const timestamp = post?.createdAt;
+  const time = dateFormat(timestamp);
 
   const onDismiss = useCallback(() => {
     router.back();
@@ -37,66 +46,67 @@ export default function PostModal(post: any) {
         <div className="w-full h-full flex flex-col gap-2">
           <div className="flex items-center not-italic flex-row justify-between w-full ">
             <div className="flex items-center gap-2">
-              {post.post.user.profilePic ? (
-                <Link href={`/user/${post.post.user.id}`}>
+              {post.user.profilePic ? (
+                <Link href={`/user/${post.user.id}`}>
                   <Image
-                    height={32}
-                    width={32}
-                    className="w-8 h-8 rounded-full object-cover "
+                    height={36}
+                    width={36}
+                    className="w-9 h-9 rounded-full object-cover "
                     src="/atsushi3.jpg"
                     alt="profile image"
                   />
                 </Link>
               ) : (
-                <Link href={`/user/${post.post.user.id}`}>
+                <Link href={`/user/${post.user.id}`}>
                   <Image
-                    height={32}
-                    width={32}
-                    className="w-8 h-8 rounded-full object-cover "
+                    height={36}
+                    width={36}
+                    className="w-9 h-9 rounded-full object-cover "
                     src="/atsushi3.jpg"
                     alt="profile image"
                   />
                 </Link>
               )}
               <Link
-                href={`/user/${post.post.user.id}`}
-                className="font-semibold text-base mr-2"
+                href={`/user/${post.user.id}`}
+                className="font-semibold text-sm"
               >
-                {post.post.user.username}
+                {post.user.username}
               </Link>
+              
             </div>
-            <div>
+            <div className="w-auto flex flex-row justify-center items-center gap-4">
               <button type="button" className="text-sm text-gray-600 rotate-90">
                 ...
                 {/* <time>{date}</time> */}
               </button>
             </div>
           </div>
-          <div className="w-full h-[70vh] relative mt-2.5">
+          <div className="w-full h-[80vh] relative mt-2.5 bg-gray-200/30 rounded-lg">
             <Image
               fill
               alt="post image"
               src="/atsushi4.jpg"
-              className="rounded-lg absolute object-cover"
+              className="w-fit h-fit rounded-lg absolute object-contain"
             />
           </div>
-          <div className="flex flex-row w-full">
-            <h1 className="leading-tight text-sm">
-              <span className="font-semibold text-base mr-2">
-                {post.post.user.username}
-              </span>
+          <p className="break-words text-sm">{post.content}</p>
 
-              {post.post.content}
-            </h1>
-          </div>
-          {/* <p className="text-sm text-gray-600">
-                {date}
-                {<time>{date}</time> 
-              </p> */}
+          <p className="text-xs text-gray-600 w-full text-end">
+            <time>{time}</time>
+          </p>
         </div>
       </main>
-      <CommentForm />
-      <Comment />
+      <CommentForm postId={post.id} />
+      {comment.length > 0 ? (
+        <>
+          {comment.map((item: any) => (
+            <Comment key={item.id} item={item} isOwn={isOwn} />
+          ))}
+        </>
+      ) : (
+        <span className="text-sm text-gray-600">No comments yet</span>
+      )}
     </div>
   );
 

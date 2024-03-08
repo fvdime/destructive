@@ -1,15 +1,23 @@
-export const dateFormat = (dateTime: string) => {
+export const dateFormat = (timestamp: string) => {
   try {
-    const date = new Date(dateTime);
+    const dateObject = new Date(timestamp!);
 
-    const month = date.toLocaleString('default', { month: 'long' });
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-
-    const formattedDate = `${month} ${day}, ${hour}:${minute < 10 ? '0' : ''}${minute}`;
-
-    return `${month} ${day}, ${hour}:${minute < 10 ? '0' : ''}${minute}`;
+    const options = { month: "short", day: "2-digit" } as const;
+    let formattedDate = "";
+    let formattedTime = "";
+    if (dateObject) {
+      formattedTime = `${dateObject
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${dateObject
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
+      formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+        dateObject
+      );
+    }
+    return  `${formattedDate}, ${formattedTime}`;
   } catch (error) {
     console.error("Error formatting date:", error);
     return "";

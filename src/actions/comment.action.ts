@@ -3,7 +3,6 @@
 import prisma from "@/libs/prisma"
 import { z } from 'zod';
 import { GetUserById } from "./user.action";
-import uploadImage from "@/libs/upload-image";
 import { revalidatePath } from 'next/cache'
 import { getToken, getUserIdFromToken } from "@/libs/sign-token";;
 
@@ -11,7 +10,7 @@ const commentSchema = z.object({
   comment: z.string().min(1),
 });
 
-export const createComment = async ({ formData, path, postId }: { formData: FormData; path: string, postId: string }) => {
+export const createComment = async ({ formData, path, postId }: { formData: FormData; path: any; postId: any }) => {
 
   try {
     const isValidData = commentSchema.parse({
@@ -73,7 +72,7 @@ export const createComment = async ({ formData, path, postId }: { formData: Form
       throw new Error("Failed to create notification!");
     }
     
-    revalidatePath(path)
+    // revalidatePath(path)
 
     return comment
   } catch (error) {
@@ -132,12 +131,14 @@ export const updateComment = async ({ formData, postId, path }: { formData: Form
   }
 }
 
-export const getComments = async () => {
+export const getComments = async (postId: any) => {
   try {
     const comments = await prisma.comment.findMany({
+      where: { postId: postId},
       orderBy: {
         createdAt: 'desc'
-      }
+      },
+      include: { user: true }
     })
     return comments
   } catch (error) {
