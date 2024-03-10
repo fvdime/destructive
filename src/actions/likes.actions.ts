@@ -7,12 +7,10 @@ import { getSinglePost } from './post.actions';
 
 export const addLike = async (postId: string) => {
   try {
-    const tokens = getToken()
-    console.log("token:::::::::::::::::", tokens)
-
-    const userId = getUserIdFromToken(tokens) as string
-
+    const token = getToken()
+    const userId = getUserIdFromToken(token) as string
     const user = await GetUserById(userId);
+
 
     if (!postId || typeof postId !== 'string') {
       throw new Error('Invalid ID');
@@ -24,6 +22,12 @@ export const addLike = async (postId: string) => {
 
     updatedLikedIDs.push(user!.id);
 
+    await prisma.post.update({
+      where: { id: postId },
+      data: { likedIds: updatedLikedIDs }
+    });
+
+    console.log("updatedLikedIDs:::::::::::::::::", updatedLikedIDs)
     // NOTIFICATION PART
     try {
       if (post?.userId) {
@@ -48,7 +52,6 @@ export const addLike = async (postId: string) => {
       throw new Error("Failed!")
     }
 
-    console.log("UPDATEDDDDDDDDDDDDDDDDDDDDDD",updatedLikedIDs)
     return updatedLikedIDs
   } catch (error) {
     throw new Error("Failed to like post!")
@@ -72,12 +75,14 @@ export const removeLike = async (postId: string) => {
 
     let updatedLikedIDs = [...(post?.likedIds || [])]
 
-    updatedLikedIDs = updatedLikedIDs.filter((likedId) => likedId !== user!.id)
+    updatedLikedIDs = updatedLikedIDs.filter((likedId) => likedId !== userId);
 
     const updatedPost = await prisma.post.update({
       where: { id: postId },
-      data: { likedIds: updatedLikedIDs }
-    })
+      data: { likedIds: updatedLikedIDs },
+    });
+
+    console.log({ updatedLikedIDs, updatedPost })
     return { updatedLikedIDs, updatedPost }
 
   } catch (error) {

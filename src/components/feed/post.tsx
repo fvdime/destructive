@@ -4,8 +4,7 @@ import Link from "next/link";
 import LikeButton from "./like-button";
 import { dateFormat } from "@/libs/date";
 
-const Post = ({ post }: { post: any }) => {
-  console.log(post)
+const Post = ({ post}: { post: any}) => {
   const timestamp = dateFormat(post.createdAt);
   return (
     <div className="w-full h-full mb-4 px-2 text-black">
