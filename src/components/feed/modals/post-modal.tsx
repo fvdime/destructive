@@ -46,34 +46,26 @@ export default function PostModal({
         <div className="w-full h-full flex flex-col gap-2">
           <div className="flex items-center not-italic flex-row justify-between w-full ">
             <div className="flex items-center gap-2">
-              {post.user.profilePic ? (
-                <Link href={`/user/${post.user.id}`}>
-                  <Image
-                    height={36}
-                    width={36}
-                    className="w-9 h-9 rounded-full object-cover "
-                    src="/atsushi3.jpg"
-                    alt="profile image"
-                  />
-                </Link>
-              ) : (
-                <Link href={`/user/${post.user.id}`}>
-                  <Image
-                    height={36}
-                    width={36}
-                    className="w-9 h-9 rounded-full object-cover "
-                    src="/atsushi3.jpg"
-                    alt="profile image"
-                  />
-                </Link>
-              )}
+              <Link href={`/user/${post.user.id}`}>
+                <Image
+                  height={36}
+                  width={36}
+                  className="w-9 h-9 rounded-full object-cover "
+                  src={
+                    post.user.profilePic
+                      ? process.env.NEXT_PUBLIC_AWS_BUCKET_URL +
+                        `${post.user.profilePic}`
+                      : "/anonymous.webp"
+                  }
+                  alt="profile image"
+                />
+              </Link>
               <Link
                 href={`/user/${post.user.id}`}
                 className="font-semibold text-sm"
               >
                 {post.user.username}
               </Link>
-              
             </div>
             <div className="w-auto flex flex-row justify-center items-center gap-4">
               <button type="button" className="text-sm text-gray-600 rotate-90">
@@ -82,15 +74,20 @@ export default function PostModal({
               </button>
             </div>
           </div>
-          <div className="w-full h-[80vh] relative mt-2.5 bg-gray-200/30 rounded-lg">
+          <div className="w-full h-[80vh] relative mt-2.5 rounded-lg">
             <Image
               fill
               alt="post image"
-              src="/atsushi4.jpg"
+              src={process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${post.image}`}
               className="w-fit h-fit rounded-lg absolute object-contain"
             />
           </div>
-          <p className="break-words text-sm">{post.content}</p>
+          <div className="my-2 text-sm">
+            <span className="font-medium mr-2 truncate">
+              {post.user.username}
+            </span>
+            {post.content}
+          </div>
 
           <p className="text-xs text-gray-600 w-full text-end">
             <time>{time}</time>

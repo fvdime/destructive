@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const Sidebar = () => {
+const Sidebar = ({currentUserId}: {currentUserId: string}) => {
   const sidebarItems = [
     {
       id: 1,
@@ -44,7 +44,7 @@ const Sidebar = () => {
     {
       id: 3,
       label: "Profile",
-      href: "/user/1",
+      href: `/user/${currentUserId}`,
       svg: (
         <svg
           className="w-5 h-5 text-secondary"

@@ -24,13 +24,7 @@ export const GetUserProfile = async(userId: string) => {
       include: { post: true, followedBy: true, following: true }
     })
 
-    const followerCount = await prisma.user.count({
-      where: {
-        followingIds: { has: userId }
-      }
-    })
-
-    return ({ ...existingUser, followerCount });
+    return ({ ...existingUser });
   } catch (error) {
     throw new Error("Failed to fetch user")
   }

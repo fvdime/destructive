@@ -164,11 +164,21 @@ export const getPosts = async () => {
       orderBy: {
         createdAt: 'desc'
       },
-      include: { 
-        user: { select: { id: true, username: true, profilePic: true } },
+      include: {
+        user: { 
+          select: 
+            { id: true, username: true, profilePic: true }
+          },
         likes: true,
-        bookmark: true
-      
+        bookmark: true,
+        comment: { 
+          include: 
+            { user: 
+              { select: 
+                { id: true, username: true, profilePic: true } 
+              } 
+            }
+          }
       }
     })
     return posts

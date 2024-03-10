@@ -27,12 +27,10 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       type="submit"
-      className={`rounded-full text-center text-semibold border border-secondary transition-all ease-in duration-500 text-sm
+      className={`rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md
     ${fullWidth ? "w-full" : "w-fit"} 
     ${secondary ? "bg-white" : "bg-secondary"} 
-    ${secondary ? "hover:bg-secondary" : "hover:bg-white"} 
     ${secondary ? "text-black" : "text-white"}
-    ${secondary ? "hover:text-white" : "hover:text-black"}
     ${large ? "font-bold" : "font-bold"}
     ${large ? "px-8" : "px-4"}
     ${large ? "py-2" : "py-1"}
