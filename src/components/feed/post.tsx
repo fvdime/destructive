@@ -4,8 +4,9 @@ import Link from "next/link";
 import LikeButton from "./like-button";
 import { dateFormat } from "@/libs/date";
 
-const Post = ({ post}: { post: any}) => {
+const Post = ({ post, userId}: { post: any, userId: string}) => {
   const timestamp = dateFormat(post.createdAt);
+  
   return (
     <div className="w-full h-full mb-4 px-2 text-black">
       <div className="flex flex-col gap-1">
@@ -51,7 +52,7 @@ const Post = ({ post}: { post: any}) => {
               />
             </Link>
           </div>
-          {/* <LikeButton likedId={post.likedIds} postId={post.id}/> */}
+          <LikeButton userId={userId} postId={post.id} likes={post.likes}/>
           <div className="mb-2 text-sm">
             <span className="font-medium mr-2 truncate">
               {post.user.username}

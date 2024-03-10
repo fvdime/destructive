@@ -164,7 +164,11 @@ export const getPosts = async () => {
       orderBy: {
         createdAt: 'desc'
       },
-      include: { user: { select: { id: true, username: true, profilePic: true } } }
+      include: { 
+        user: { select: { id: true, username: true, profilePic: true } },
+        likes: true
+      
+      }
     })
     return posts
   } catch (error) {
