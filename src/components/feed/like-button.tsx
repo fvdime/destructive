@@ -6,8 +6,7 @@ import toast from "react-hot-toast";
 
 export default function LikeButton({ likedId, postId }: { likedId: any, postId: any }) {
 
-  console.log("POST ID", postId); // Logging postId only
-
+  console.log("POST ID", postId);
   const hasLiked = useMemo(() => {
     const list = likedId || [];
 
@@ -18,11 +17,12 @@ export default function LikeButton({ likedId, postId }: { likedId: any, postId: 
   const toggleLike = useCallback(async () => {
     try {
       let req;
+      const id = "65e881e7f11e2cf6de82d7a0"
 
       if (!hasLiked) {
-        req = await removeLike(postId)
+        req = await removeLike(id)
       } else {
-        req = await addLike(postId)
+        req = await addLike(id)
       }
 
       await req
@@ -32,7 +32,7 @@ export default function LikeButton({ likedId, postId }: { likedId: any, postId: 
       console.log(error)
       toast.error("Something went wrong!")
     }
-  }, [hasLiked, postId]);
+  }, [hasLiked]);
 
   return (
     <div className="w-full flex flex-row items-center justify-start gap-2 my-2">

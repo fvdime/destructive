@@ -5,7 +5,7 @@ import { getToken, getUserIdFromToken } from '@/libs/sign-token';
 import { GetUserById } from './user.action';
 import { getSinglePost } from './post.actions';
 
-export const addLike = async ({ postId, path }: { postId: string, path: string }) => {
+export const addLike = async (postId: string) => {
   try {
     const tokens = getToken()
     console.log("token:::::::::::::::::", tokens)
@@ -48,13 +48,14 @@ export const addLike = async ({ postId, path }: { postId: string, path: string }
       throw new Error("Failed!")
     }
 
+    console.log("UPDATEDDDDDDDDDDDDDDDDDDDDDD",updatedLikedIDs)
     return updatedLikedIDs
   } catch (error) {
     throw new Error("Failed to like post!")
   }
 }
 
-export const removeLike = async ({ postId, path }: { postId: string, path: string }) => {
+export const removeLike = async (postId: string) => {
   try {
     const tokens = getToken()
     console.log("token:::::::::::::::::", tokens)
