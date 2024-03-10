@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LikeButton from "./like-button";
 import { dateFormat } from "@/libs/date";
+import BookMarkButton from "./bookmark-button";
 
 const Post = ({ post, userId}: { post: any, userId: string}) => {
   const timestamp = dateFormat(post.createdAt);
@@ -52,7 +53,10 @@ const Post = ({ post, userId}: { post: any, userId: string}) => {
               />
             </Link>
           </div>
-          <LikeButton userId={userId} postId={post.id} likes={post.likes}/>
+          <div className="flex flex-row justify-between items-center w-full">
+            <LikeButton userId={userId} postId={post.id} likes={post.likes}/>
+            <BookMarkButton userId={userId} postId={post.id} bookmark={post.bookmark}/>
+          </div>
           <div className="mb-2 text-sm">
             <span className="font-medium mr-2 truncate">
               {post.user.username}

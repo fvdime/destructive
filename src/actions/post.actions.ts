@@ -166,7 +166,8 @@ export const getPosts = async () => {
       },
       include: { 
         user: { select: { id: true, username: true, profilePic: true } },
-        likes: true
+        likes: true,
+        bookmark: true
       
       }
     })
