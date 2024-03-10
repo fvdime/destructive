@@ -146,9 +146,9 @@ export const getSinglePost = async (id: any) => {
       where: { id },
       include: {
         user: true,
-        comment: { 
-          include: { user: true }, 
-          orderBy: { createdAt: 'desc' } 
+        comment: {
+          include: { user: true },
+          orderBy: { createdAt: 'desc' }
         }
       }
     })
@@ -163,7 +163,8 @@ export const getPosts = async () => {
     const posts = await prisma.post.findMany({
       orderBy: {
         createdAt: 'desc'
-      }
+      },
+      include: { user: { select: { id: true, username: true, profilePic: true } } }
     })
     return posts
   } catch (error) {
