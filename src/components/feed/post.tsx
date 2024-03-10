@@ -51,7 +51,7 @@ const Post = ({ post}: { post: any}) => {
               />
             </Link>
           </div>
-          <LikeButton likedId={post.likedIds} postId={post.id}/>
+          {/* <LikeButton likedId={post.likedIds} postId={post.id}/> */}
           <div className="mb-2 text-sm">
             <span className="font-medium mr-2 truncate">
               {post.user.username}

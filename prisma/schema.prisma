@@ -28,12 +28,16 @@ model User {
   comment       Comment[]
   bookmark      Bookmark[]
   notifications Notification[]
+  likes         Like[]
 
   conversationIds String[]       @db.ObjectId
   conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
 
   sentMessage     Message[] @relation("sender")
   receivedMessage Message[] @relation("receiver")
+
+  followedBy Follow[] @relation("following")
+  following  Follow[] @relation("follower")
 }
 
 model Post {
@@ -43,7 +47,6 @@ model Post {
   published Boolean  @default(true)
   userId    String   @db.ObjectId
   hashtags  String[] @default([])
-  likedIds  String[] @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -52,6 +55,7 @@ model Post {
   bookmark Bookmark[]
   comment  Comment[]
   hashtag  Hashtag[]
+  likes    Like[]
 }
 
 model Hashtag {
@@ -78,6 +82,33 @@ model Comment {
 
   parent   Comment?  @relation("children", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children Comment[] @relation("children")
+}
+
+model Follow {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  followerId  String @db.ObjectId
+  followingId String @db.ObjectId
+
+  follower  User @relation("follower", fields: [followerId], references: [id])
+  following User @relation("following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Like {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  userId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([userId])
 }
 
 model Bookmark {
