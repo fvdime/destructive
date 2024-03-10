@@ -21,7 +21,7 @@ export const GetUserProfile = async(userId: string) => {
   try {
     const existingUser = await prisma.user.findUnique({
       where: { id: userId},
-      include: { post: true }
+      include: { post: true, followedBy: true, following: true }
     })
 
     const followerCount = await prisma.user.count({

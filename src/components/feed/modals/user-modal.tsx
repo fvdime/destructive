@@ -7,7 +7,7 @@ import Button from "@/components/shared/button";
 import Image from "next/image";
 import UserBio from "../user-bio";
 
-export default function UserModal({user, isOwn}: { user: any, isOwn: boolean}) {
+export default function UserModal({user, isOwn, id}: { user: any, isOwn: boolean, id: string}) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function UserModal({user, isOwn}: { user: any, isOwn: boolean}) {
 
   const BodyContent = (
     <div className="flex flex-col gap-4 w-full h-full max-w-screen-md mx-auto">
-      <UserBio user={user} isOwn={isOwn}/>
+      <UserBio user={user} isOwn={isOwn} id={id}/>
       <div className="w-full h-full grid grid-cols-3 gap-2">
       {user.post.length > 0 ? (
         <>

@@ -10,6 +10,7 @@ const NotificationsPage = async () => {
   console.log(userId)
 
   const notification = await getNotifications(userId)
+  console.log(notification)
 
   return (
     <>

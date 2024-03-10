@@ -2,17 +2,13 @@
 
 import prisma from '@/libs/prisma';
 import { getToken, getUserIdFromToken } from '@/libs/sign-token';
-import { GetUserById } from './user.action';
 import { getSinglePost } from './post.actions';
+import { revalidatePath } from 'next/cache';
 
-export const addLike = async ({ postId, path }: { postId: string, path: string }) => {
+export const likePost = async (postId: string) => {
   try {
-    const tokens = getToken()
-    console.log("token:::::::::::::::::", tokens)
-
-    const userId = getUserIdFromToken(tokens) as string
-
-    const user = await GetUserById(userId);
+    const token = getToken()
+    const userId = getUserIdFromToken(token) as string
 
     if (!postId || typeof postId !== 'string') {
       throw new Error('Invalid ID');
@@ -20,66 +16,70 @@ export const addLike = async ({ postId, path }: { postId: string, path: string }
 
     const post = await getSinglePost(postId)
 
-    let updatedLikedIDs = [...(post?.likedIds || [])]
+    const like = await prisma.like.findUnique({
+      where: {
+        postId_userId: {
+          postId,
+          userId
+        }
+      }
+    })
 
-    updatedLikedIDs.push(user!.id);
 
-    // NOTIFICATION PART
-    try {
-      if (post?.userId) {
-        await prisma.notification.create({
-          data: {
-            body: 'Someone liked your post!',
-            userId: post.userId
-          },
-          include: { user: true }
+    if (like) {
+      try {
+        await prisma.like.delete({
+          where: {
+            postId_userId: {
+              postId,
+              userId
+            }
+          }
         })
 
-        await prisma.user.update({
-          where: {
-            id: post.userId
-          },
-          data: {
-            hasNotifications: true
-          }
-        });
+        revalidatePath(`/feed`)
+        return { message: "Unliked Post." }
+      } catch (error) {
+        return { message: "Something went wrong!" }
       }
-    } catch (error) {
-      throw new Error("Failed!")
     }
 
-    return updatedLikedIDs
+    try {
+      await prisma.like.create({
+        data: { postId, userId }
+      })
+
+      revalidatePath(`/feed`)
+
+      // NOTIFICATION PART
+      try {
+        if (post?.userId) {
+          await prisma.notification.create({
+            data: {
+              body: 'Someone liked your post!',
+              userId: post.userId
+            },
+            include: { user: true }
+          })
+
+          await prisma.user.update({
+            where: {
+              id: post.userId
+            },
+            data: {
+              hasNotifications: true
+            }
+          });
+        }
+      } catch (error) {
+        throw new Error("Failed!")
+      }
+
+      return { message: "Liked Post." }
+    } catch (error) {
+      return { message: "Something went wrong!" }
+    }
   } catch (error) {
     throw new Error("Failed to like post!")
-  }
-}
-
-export const removeLike = async ({ postId, path }: { postId: string, path: string }) => {
-  try {
-    const tokens = getToken()
-    console.log("token:::::::::::::::::", tokens)
-
-    const userId = getUserIdFromToken(tokens) as string
-
-    const user = await GetUserById(userId);
-
-    if (!postId || typeof postId !== 'string') {
-      throw new Error('Invalid ID');
-    }
-
-    const post = await getSinglePost(postId)
-
-    let updatedLikedIDs = [...(post?.likedIds || [])]
-
-    updatedLikedIDs = updatedLikedIDs.filter((likedId) => likedId !== user!.id)
-
-    const updatedPost = await prisma.post.update({
-      where: { id: postId },
-      data: { likedIds: updatedLikedIDs }
-    })
-    return { updatedLikedIDs, updatedPost }
-
-  } catch (error) {
-    throw new Error("Failed to remove like!")
   }
 }
