@@ -60,7 +60,7 @@ const Sidebar = ({currentUserId}: {currentUserId: string}) => {
     {
       id: 4,
       label: "Messages",
-      href: "/messages",
+      href: "/c",
       svg: (
         <svg
           className="w-4 h-4 text-secondary"

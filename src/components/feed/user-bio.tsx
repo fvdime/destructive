@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "../shared/button";
 import FollowButton from "./follow-button";
+import { createConversation } from "@/actions/conversation.action";
 
 const UserBio = ({
   user,
@@ -14,6 +15,7 @@ const UserBio = ({
   id: string;
 }) => {
   const userId = user.id;
+  console.log(userId)
 
   const isFollowing = user.followedBy.some(
     (follow: any) => follow.followerId === id
@@ -64,6 +66,14 @@ const UserBio = ({
           <div className="flex flex-row items-center gap-4 mt-4">
             <FollowButton userId={userId} isFollowing={isFollowing} isOwn={isOwn} />
             <Link href={isOwn ? "/user/edit" : "/messages"} className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md w-full px-8 py-1 font-bold">{isOwn ? "Edit Profile" : "Message"}</Link>
+            <form action={async (formData: FormData) => {
+              const userID = formData.get("userID")
+
+              await createConversation(userID)
+            }}>
+            <input type="hidden" name="userID" value={userId} />
+            <button type="submit">{isOwn ? "Edit Profile" : "Message"}</button>
+            </form>
           </div>
         </div>
       </div>
