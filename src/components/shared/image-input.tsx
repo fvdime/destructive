@@ -6,9 +6,14 @@ import { useCallback } from "react";
 interface ImageUploadProps {
   onChange: (value: string) => void;
   value: string;
+  defaultValue?: any;
 }
 
-const ImageUploadInput = ({ value, onChange }: ImageUploadProps) => {
+const ImageUploadInput = ({
+  value,
+  onChange,
+  defaultValue,
+}: ImageUploadProps) => {
   const handleUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -37,6 +42,7 @@ const ImageUploadInput = ({ value, onChange }: ImageUploadProps) => {
           className="hidden"
           name="image"
           onChange={handleUpload}
+          defaultValue={defaultValue}
         />
         <svg
           className="w-6 h-6"
@@ -63,7 +69,16 @@ const ImageUploadInput = ({ value, onChange }: ImageUploadProps) => {
         <h2 className="font-semibold text-lg">Click to upload</h2>
         {value && (
           <div className="absolute inset-0 w-full h-full">
-            <Image alt="upload" layout="fill" objectFit="cover" src={value} />
+            <Image
+              alt="upload"
+              layout="fill"
+              objectFit="cover"
+              src={
+                value
+                  ? process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${value}`
+                  : value
+              }
+            />
           </div>
         )}
       </label>

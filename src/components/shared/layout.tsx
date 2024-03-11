@@ -6,8 +6,10 @@ import { GetUsers } from "@/actions/user.action";
 
 export default async function Layout({
   children,
+  currentUserId
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  currentUserId?: string
 }) {
   const friendSuggestion = await GetUsers();
 
@@ -16,7 +18,7 @@ export default async function Layout({
       <div className="max-w-screen-lg mx-auto">
         <div className="w-full flex flex-row justify-between lg:gap-4 pt-4 h-full">
           <div className="hidden w-1/5 h-full lg:flex lg:flex-col gap-4 sticky top-2">
-            <Sidebar />
+            <Sidebar currentUserId={currentUserId}/>
           </div>
           <div className="h-full w-full lg:w-3/5 flex flex-col gap-4 overflow-y-auto rounded-lg">
             {children}
