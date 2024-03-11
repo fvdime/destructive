@@ -1,33 +1,40 @@
-import React from "react";
+"use client"
 
-const MessageForm = () => {
+import { SendMessages } from "@/actions/message.action";
+import React, { useOptimistic } from "react";
+// 65e0d87dfc1811a26d9d9f58
+
+type Message = {
+  message: string
+}
+
+const MessageForm = ({ messages }: { messages: Message[] }) => {
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic<Message>(
+    messages,
+    // @ts-ignore
+    (newMessage: string) => (state: Message[]) => [
+      ...state,
+      { message: newMessage },
+    ]
+  );
+
+  const userId = '65e0d87dfc1811a26d9d9f58'
+
   return (
-    <div className="flex w-full flex-row items-center gap-2 rounded-[99px] border border-gray-900/10 bg-gray-900/5 p-2">
-      <div className="flex">
-        <button
-          className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
-        >
-          <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-            <svg
-              width="14"
-              height="12"
-              viewBox="0 0 14 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.8 10.5H12.609L12.2472 9.77639L9.84719 4.97639L9.39997 4.08196L8.95276 4.97639L7.79998 7.28196L5.84719 3.37639L5.39998 2.48196L4.95276 3.37639L1.75276 9.77639L1.39096 10.5H2.19998H11.8ZM1.42216 1.22218C1.62845 1.01589 1.90824 0.899994 2.19998 0.899994H11.8C12.0917 0.899994 12.3715 1.01589 12.5778 1.22218C12.7841 1.42847 12.9 1.70826 12.9 1.99999V9.99999C12.9 10.2917 12.7841 10.5715 12.5778 10.7778C12.3715 10.9841 12.0917 11.1 11.8 11.1H2.19998C1.90824 11.1 1.62845 10.9841 1.42216 10.7778C1.21587 10.5715 1.09998 10.2917 1.09998 9.99999V1.99999C1.09998 1.70826 1.21587 1.42847 1.42216 1.22218Z"
-                fill="#90A4AE"
-                stroke="#90A4AE"
-              ></path>
-            </svg>
-          </span>
-        </button>
-      </div>
+    <form
+    action={async (formData: FormData) => {
+      alert("Clicked")
+      const message = formData.get('message')
+      addOptimisticMessage(message)
+      
+      await SendMessages(message, userId)
+    }}
+    className="flex w-full flex-row items-center gap-2 border-t border-zinc-300 bg-white px-2 py-3 fixed bottom-0 right-0 lg:left-80 lg:w-auto">
       <div className="relative grid h-full w-full min-w-[200px]">
         <textarea
           rows={1}
+          name="message"
+          id="message"
           placeholder="Your Message"
           className="peer h-full  min-h-full w-full resize-y rounded-[7px]  !border-0 border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder:text-blue-gray-300 placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-transparent focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
         ></textarea>
@@ -36,7 +43,7 @@ const MessageForm = () => {
       <div>
         <button
           className="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-gray-900 transition-all hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
+          type="submit"
         >
           <span className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
             <svg
@@ -54,7 +61,7 @@ const MessageForm = () => {
           </span>
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

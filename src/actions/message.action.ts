@@ -10,13 +10,21 @@ import { getToken, getUserIdFromToken } from "@/libs/sign-token";;
 const messageSchema = z.object({
   message: z.string().min(1),
 });
-export const SendMessages = async ({ formData, path, userId }: { formData: FormData; path: string, userId: string }) => {
-  try {
-    const isValidData = messageSchema.parse({
-      message: formData.get('message'),
-    });
 
-    console.log(isValidData);
+export const SendMessages = async (value: FormDataEntryValue | null, userId: string) => {
+  try {
+    const validatedFields = messageSchema.safeParse({ message: value });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Like Post.",
+    };
+  }
+
+  const data = validatedFields.data
+
+    console.log(validatedFields);
 
     const tokens = getToken()
     console.log("token:::::::::::::::::", tokens)
@@ -52,7 +60,7 @@ export const SendMessages = async ({ formData, path, userId }: { formData: FormD
       try {
         const message = await prisma.message.create({
           data: {
-            message: isValidData.message,
+            message: data.message,
             senderId: currentUserId,
             receiverId: userId,
             conversationId: conversation.id
@@ -81,12 +89,14 @@ export const SendMessages = async ({ formData, path, userId }: { formData: FormD
       try {
         const message = await prisma.message.create({
           data: {
-            message: isValidData.message,
+            message: data.message,
             conversationId: newConversation.id,
             senderId: currentUserId,
             receiverId: userId
           }
         })
+
+        console.log(message)
 
         return message
       } catch (error) {
