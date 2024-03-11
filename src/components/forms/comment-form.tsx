@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Button from "../shared/button";
 import { createComment } from "@/actions/comment.action";
 import { useFormStatus } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -12,8 +11,8 @@ function SubmitButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" aria-disabled={pending}>
-      Add
+    <button type="submit" aria-disabled={pending} className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md bg-secondary text-white font-bold px-8 py-1.5">
+      Comment
     </button>
   );
 }
@@ -31,8 +30,8 @@ const CommentForm = ({ postId }: { postId: any }) => {
   });
 
   return (
-    <div {...form}>
-      <h2 className="mb-8 text-lg">Comments</h2>
+    <div {...form} className="mt-8">
+      {/* <h2 className="mb-8 text-lg">Comments</h2> */}
       <form
         className="mb-6"
         onSubmit={form.handleSubmit(async (values) => {

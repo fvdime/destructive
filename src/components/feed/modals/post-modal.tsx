@@ -94,7 +94,7 @@ export default function PostModal({
           </p>
         </div>
       </main>
-      <CommentForm postId={post.id} />
+      <CommentForm postId={post.id}/>
       {comment.length > 0 ? (
         <>
           {comment.map((item: any) => (
@@ -102,7 +102,7 @@ export default function PostModal({
           ))}
         </>
       ) : (
-        <span className="text-sm text-gray-600">No comments yet</span>
+        <span className="text-sm text-gray-600 mb-8">No comments yet</span>
       )}
     </div>
   );

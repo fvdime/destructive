@@ -4,8 +4,8 @@ import React from "react";
 export default function BottomNavigation({currentUserId}: { currentUserId: string }) {
   return (
     <div className="w-full flex md:hidden mt-12">
-      <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border-t border-gray-200 bottom-0 left-1/2">
-        <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
+      <div className="fixed z-50 w-full h-16 -translate-x-1/2 bg-white border-t border-gray-200 bottom-0 left-1/2">
+        <div className="grid h-full w-full grid-cols-5 mx-auto">
           <Link
           href="/feed"
             className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-100 group transition duration-300 ease"

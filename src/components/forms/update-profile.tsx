@@ -2,23 +2,9 @@
 
 import React, { useState } from "react";
 import Input from "../shared/input";
-import Button from "../shared/button";
 import { useFormState, useFormStatus } from "react-dom";
-import { UpdateProfile, UpdateProfileAction, UpdateUserProfile } from "@/actions/user.action";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {  UpdateProfileAction } from "@/actions/user.action";
 import ImageUploadInput from "../shared/image-input";
-
-const profileSchema = z.object({
-  username: z.string().min(1),
-  bio: z.string().min(1).nullish(),
-  name: z.string().nullish(),
-  email: z
-    .string()
-    .min(1, { message: 'This field has to be filled.' })
-    .email('This is not a valid email.'),
-});
 
 const initialState: { errorMessage: string } = {
   errorMessage: '',

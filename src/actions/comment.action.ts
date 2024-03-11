@@ -17,7 +17,7 @@ export const createComment = async (values: z.infer<typeof commentSchema>, postI
     console.log(isValidData);
 
     if (!isValidData.success) {
-      return { 
+      return {
         errors: isValidData.error.flatten().fieldErrors,
         message: "Missing Fields! Failed to create comment."
       }
@@ -77,12 +77,63 @@ export const createComment = async (values: z.infer<typeof commentSchema>, postI
     } catch (error) {
       return { message: "Failed to create notification." };
     }
-    
+
     revalidatePath(`/feed/${postId}`)
 
-    return { message: "Created Comment."}
+    return { message: "Created Comment." }
   } catch (error) {
     return { message: "Failed to create comment." };
+  }
+}
+
+export async function createCommentAction(
+  postId: string,
+  prevState: any,
+  formData: FormData
+) {
+  try {
+    const isValidData = commentSchema.parse({
+      comment: formData.get('comment'),
+    });
+
+    const token = getToken()
+    const userId = getUserIdFromToken(token) as string
+
+    if (!userId) return { errorMessage: 'User not found!' }
+
+    if (!isValidData.comment) return { errorMessage: 'Please write some comment!' }
+
+    await prisma.comment.create({
+      data: {
+        comment: isValidData.comment,
+        postId: postId,
+        userId: userId,
+      },
+      include: {
+        user: true
+      }
+    });
+
+    revalidatePath(`/feed/${postId}`)
+
+  } catch (err) {
+    if (err instanceof Error && err.name == 'ZodError') {
+      const errors = {
+        errorMessage: '',
+      };
+
+      [...JSON.parse(err.message)].forEach((item) => {
+        if (item?.path[0] == 'email') {
+          errors.errorMessage = item?.message || '';
+        }
+      });
+
+      return errors;
+    }
+
+    return {
+      errorMessage: '',
+    };
   }
 }
 
@@ -140,7 +191,7 @@ export const updateComment = async ({ formData, postId, path }: { formData: Form
 export const getComments = async (postId: any) => {
   try {
     const comments = await prisma.comment.findMany({
-      where: { postId: postId},
+      where: { postId: postId },
       orderBy: {
         createdAt: 'desc'
       },
