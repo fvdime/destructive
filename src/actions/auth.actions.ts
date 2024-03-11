@@ -6,6 +6,8 @@ import bcrypt, { compare } from 'bcrypt'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { signToken } from "@/libs/token"
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 const authSchema = z.object({
   username: z.string().min(1).nullish(),
@@ -94,4 +96,11 @@ export const loginUser = async (formData: FormData) => {
     return console.log(error)
   }
 
+}
+
+export async function Logout() {
+  const cookieStore = cookies();
+  cookieStore.delete('token');
+  cookieStore.delete('logged-in');
+  redirect('/');
 }

@@ -5,70 +5,58 @@ import { z } from 'zod';
 import { GetUserById } from "./user.action";
 import uploadImage from "@/libs/upload-image";
 import { revalidatePath } from 'next/cache'
-import { getToken, getUserIdFromToken } from "@/libs/sign-token";;
+import { getToken, getUserIdFromToken } from "@/libs/sign-token";import { redirect } from "next/navigation";
+;
 
 const postSchema = z.object({
   content: z.string().min(1),
   hashtag: z.string().nullish()
 });
 
-export const createPost = async ({ formData, path }: { formData: FormData, path: string }) => {
+export const createPost = async (formData: FormData) => {
+  const isValidData = postSchema.parse({
+    content: formData.get('content'),
+    hashtag: formData.get('hashtag'),
+  });
 
-  try {
-    const isValidData = postSchema.parse({
-      content: formData.get('content'),
-      hashtag: formData.get('hashtag'),
-    });
+  const token = getToken()
+  const userId = getUserIdFromToken(token) as string
+  const user = await GetUserById(userId)
 
-    console.log(isValidData);
+  if (!user) return { error: "User not found" };
 
-    const token = getToken()
-    console.log("token:::::::::::::::::", token)
-
-    const userId = getUserIdFromToken(token) as string
-
-    const user = await GetUserById(userId)
-
-    if (!user) return { error: "User not found" };
-    // console.log(author)
-
-    if (!user) {
-      throw new Error("Failed to get user!");
-    }
-
-    const image = formData.get('image') as FormDataEntryValue;
-    let filePath = '';
-
-    if (image) {
-      const response = await uploadImage({ file: image });
-      if (
-        response !== null &&
-        response.result['$metadata'].httpStatusCode == 200
-      )
-        filePath = response.filePath;
-    }
-
-    const hashtags = isValidData.hashtag?.split(',');
-
-    const post = await prisma.post.create({
-      data: {
-        image: filePath,
-        hashtags: hashtags || [],
-        content: isValidData.content,
-        userId: user!.id
-      },
-      include: {
-        user: true
-      }
-    });
-
-    console.log("Created Post!", post);
-    revalidatePath(`${path}/${post.id}`)
-
-    return post
-  } catch (error) {
-    return console.log(error)
+  if (!user) {
+    throw new Error("Failed to get user!");
   }
+
+  const image = formData.get('image') as FormDataEntryValue;
+  let filePath = '';
+
+  if (image) {
+    const response = await uploadImage({ file: image });
+    if (
+      response !== null &&
+      response.result['$metadata'].httpStatusCode == 200
+    )
+      filePath = response.filePath;
+  }
+
+  const hashtags = isValidData.hashtag?.split(',');
+
+  const post = await prisma.post.create({
+    data: {
+      image: filePath,
+      hashtags: hashtags || [],
+      content: isValidData.content,
+      userId: user!.id
+    },
+    include: {
+      user: true
+    }
+  });
+
+  console.log("Created Post!", post);
+  redirect(`/feed/${post.id}`)
 }
 
 export const deletePost = async ({ id, path }: { id: any; path: string }) => {
@@ -165,20 +153,22 @@ export const getPosts = async () => {
         createdAt: 'desc'
       },
       include: {
-        user: { 
-          select: 
+        user: {
+          select:
             { id: true, username: true, profilePic: true }
-          },
+        },
         likes: true,
         bookmark: true,
-        comment: { 
-          include: 
-            { user: 
-              { select: 
-                { id: true, username: true, profilePic: true } 
-              } 
+        comment: {
+          include:
+          {
+            user:
+            {
+              select:
+                { id: true, username: true, profilePic: true }
             }
           }
+        }
       }
     })
     return posts

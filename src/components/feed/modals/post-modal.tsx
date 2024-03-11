@@ -22,7 +22,6 @@ export default function PostModal({
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  console.log("IS OWNNNNNNN", isOwn);
   const timestamp = post?.createdAt;
   const time = dateFormat(timestamp);
 
@@ -87,8 +86,16 @@ export default function PostModal({
               {post.user.username}
             </span>
             {post.content}
+            {post.hashtags.length > 0 &&
+              post.hashtags.map(
+                (hashtag: string, i: number) =>
+                  hashtag && (
+                    <span key={i} className="text-gray-600 ml-2">
+                      #{hashtag}
+                    </span>
+                  )
+              )}
           </div>
-
           <p className="text-xs text-gray-600 w-full text-end">
             <time>{time}</time>
           </p>
@@ -102,7 +109,7 @@ export default function PostModal({
           ))}
         </>
       ) : (
-        <span className="text-sm text-gray-600">No comments yet</span>
+        <span className="text-sm text-gray-600 mb-8">No comments yet</span>
       )}
     </div>
   );
@@ -137,7 +144,7 @@ export default function PostModal({
 
       <div
         ref={wrapper}
-        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 py-8 overflow-auto"
+        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 py-8 pb-16 md:pb-0 overflow-auto"
       >
         <div>{BodyContent}</div>
       </div>

@@ -10,6 +10,11 @@ interface AuthenticatedRequest extends NextRequest {
 
 let redirectToLogin = false;
 
+const AUTH_PAGES = ['/login', '/register'];
+
+const isAuthPages = (url: string) =>
+    AUTH_PAGES.some((page) => page.startsWith(url));
+
 export default async function middleware(req: NextRequest) {
   const { nextUrl, cookies } = req;
 
@@ -19,14 +24,11 @@ export default async function middleware(req: NextRequest) {
     token = req?.headers?.get("Authorization")?.substring(7) || null;
   }
 
-  console.log("Token:", token);
-
   if (nextUrl.pathname.startsWith("/login" || "/register") && (!token || redirectToLogin)) {
-    console.log("Skipping auth route")
     return
   }
 
-  if (nextUrl.pathname === "/" && !token) {
+  if (nextUrl.pathname === "/" || nextUrl.pathname === "/register"  && !token) {
     return NextResponse.next();
   }
 
@@ -61,6 +63,19 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/register?${new URLSearchParams({
+          error: "badauth",
+          forceLogin: "true",
+        })}`,
+        nextUrl.href
+      )
+    );
+  }
+
+  if (!authUser && nextUrl.pathname !== "/login") {
+    console.log("Unauthorized: Not authenticated, redirecting to login");
+    return NextResponse.redirect(
+      new URL(
+        `/login?${new URLSearchParams({
           error: "badauth",
           forceLogin: "true",
         })}`,

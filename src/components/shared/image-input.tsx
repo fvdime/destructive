@@ -73,11 +73,7 @@ const ImageUploadInput = ({
               alt="upload"
               layout="fill"
               objectFit="cover"
-              src={
-                value
-                  ? process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${value}`
-                  : value
-              }
+              src={value}
             />
           </div>
         )}

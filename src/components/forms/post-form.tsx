@@ -9,6 +9,7 @@ import Link from "next/link";
 import Button from "../shared/button";
 import { createPost } from "@/actions/post.actions";
 import toast from "react-hot-toast";
+import TagInput from "../shared/tag-input";
 
 interface PostFormProps {
   type?: "Create" | "Update";
@@ -43,8 +44,6 @@ export default function PostModal({ type }: PostFormProps) {
       const input: any = document.getElementById("image");
       var resultString = hashtag.join(",");
 
-      const path = "/feed";
-
       const formData = new FormData();
 
       formData.append("hashtag", resultString);
@@ -54,11 +53,10 @@ export default function PostModal({ type }: PostFormProps) {
       console.log("Form submitted with:", formData);
 
       try {
-        const post = await createPost({ formData, path });
+        const post = await createPost(formData);
         toast.success("Successfully Created!");
 
         console.log("Response:", post);
-        router.push(`/feed/${post?.id}`)
       } catch (error) {
         router.refresh();
         toast.error("Permission denied!");
@@ -83,7 +81,7 @@ export default function PostModal({ type }: PostFormProps) {
         ></textarea>
         <label className="after:content[' '] pointer-events-none absolute left-0 -top-1 flex h-full w-full select-none text-sm font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-900 after:transition-transform after:duration-300 peer-placeholder-shown:leading-tight peer-placeholder-shown:text-blue-gray-500 peer-focus:text-sm peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:after:scale-x-100 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500"></label>
       </div>
-      <Input id="hashtag" name="hashtag" placeholder="Hashtags" />
+      <TagInput hashtag={hashtag} setHashtag={setHashtag} />
       <Button label="Share" fullWidth large onClick={handleSubmit} />
     </div>
   );

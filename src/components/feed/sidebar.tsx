@@ -1,3 +1,6 @@
+"use client"
+
+import { Logout } from "@/actions/auth.actions";
 import Link from "next/link";
 import React from "react";
 
@@ -77,7 +80,7 @@ const Sidebar = ({currentUserId}: {currentUserId: string}) => {
     {
       id: 5,
       label: "Search",
-      href: "/search",
+      href: "/feed/s",
       svg: (
         <svg
           className="w-4 h-4 text-secondary"
@@ -190,6 +193,9 @@ const Sidebar = ({currentUserId}: {currentUserId: string}) => {
           <div>
             <button
               type="button"
+              onClick={async () => {
+                await Logout()
+              }}
               className="text-center font-semibold mt-4 lg:block px-4 py-1.5 rounded-lg bg-secondary cursor-pointer shadow hover:shadow-lg transition-all ease-in duration-300 text-white hover:text-gray-100 w-full"
             >
               Log Out
