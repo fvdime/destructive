@@ -7,17 +7,23 @@ import { revalidatePath } from 'next/cache'
 import { getToken, getUserIdFromToken } from "@/libs/sign-token";;
 
 const commentSchema = z.object({
-  comment: z.string().min(1),
+  comment: z.string()
 });
 
-export const createComment = async ({ formData, path, postId }: { formData: FormData; path: any; postId: any }) => {
-
+export const createComment = async (values: z.infer<typeof commentSchema>, postId: string) => {
   try {
-    const isValidData = commentSchema.parse({
-      comment: formData.get('comment'),
-    });
+    const isValidData = commentSchema.safeParse(values);
 
     console.log(isValidData);
+
+    if (!isValidData.success) {
+      return { 
+        errors: isValidData.error.flatten().fieldErrors,
+        message: "Missing Fields! Failed to create comment."
+      }
+    }
+
+    const data = isValidData.data
 
     const tokens = getToken()
     console.log("token:::::::::::::::::", tokens)
@@ -33,7 +39,7 @@ export const createComment = async ({ formData, path, postId }: { formData: Form
 
     const comment = await prisma.comment.create({
       data: {
-        comment: isValidData.comment,
+        comment: data.comment,
         postId: postId,
         userId: user!.id
       },
@@ -69,14 +75,14 @@ export const createComment = async ({ formData, path, postId }: { formData: Form
       }
 
     } catch (error) {
-      throw new Error("Failed to create notification!");
+      return { message: "Failed to create notification." };
     }
     
-    // revalidatePath(path)
+    revalidatePath(`/feed/${postId}`)
 
-    return comment
+    return { message: "Created Comment."}
   } catch (error) {
-    return console.log(error)
+    return { message: "Failed to create comment." };
   }
 }
 
