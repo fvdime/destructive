@@ -1,6 +1,9 @@
+import { dateFormat } from "@/libs/date";
 import React from "react";
 
-const Message = () => {
+const Message = ({ message }: { message: any }) => {
+  const timestamp = dateFormat(message.createdAt);
+
   return (
     <div className="lg:p-4 w-full">
       <div className="flex flex-col items-start gap-2.5 w-full">
@@ -17,13 +20,10 @@ const Message = () => {
         </div>
         <div className="flex flex-col gap-1 w-full max-w-[440px] self-end">
           <div className="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-ee-xl">
-            <p className="text-sm font-normal text-gray-900">
-              {" "}
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-            </p>
+            <p className="text-sm font-normal text-gray-900">{message.message}</p>
           </div>
-          <span className="text-sm font-normal text-gray-500">
-            11:46
+          <span className="text-sm font-normal text-gray-500 text-end">
+            {timestamp.slice(8, 13)}
           </span>
         </div>
       </div>

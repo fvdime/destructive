@@ -98,6 +98,7 @@ export const SendMessages = async (value: FormDataEntryValue | null, userId: str
 
         console.log(message)
 
+        revalidatePath(`/c/${conversation!.id}`)
         return message
       } catch (error) {
         console.log(error)
@@ -109,3 +110,15 @@ export const SendMessages = async (value: FormDataEntryValue | null, userId: str
     throw new Error("Failed");
   }
 };
+
+export const getMessages = async (id: string) => {
+  try {
+    const messages = await prisma.message.findMany({
+      where: { conversationId: id}
+    })
+
+    return messages
+  } catch (error) {
+    console.log(error)
+  }
+}
