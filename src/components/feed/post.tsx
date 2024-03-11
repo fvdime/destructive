@@ -43,8 +43,7 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
               <Image
                 fill
                 alt="post image"
-                src={process.env.NEXT_PUBLIC_AWS_BUCKET_URL +
-                  `${post.image}`}
+                src={process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${post.image}`}
                 className="w-auto h-auto rounded-lg absolute object-contain"
               />
             </Link>
@@ -61,7 +60,16 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
             <span className="font-medium mr-2 truncate">
               {post.user.username}
             </span>
-            {post.content}
+            {post.content}{" "}
+            {post.hashtags.length > 0 &&
+              post.hashtags.map(
+                (hashtag: string, i: number) =>
+                  hashtag && (
+                    <span key={i} className="text-gray-600 ml-2">
+                      #{hashtag}
+                    </span>
+                  )
+              )}
           </div>
           {post.comment.length > 0 && (
             <Link

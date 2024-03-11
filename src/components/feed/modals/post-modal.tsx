@@ -22,7 +22,6 @@ export default function PostModal({
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  console.log("IS OWNNNNNNN", isOwn);
   const timestamp = post?.createdAt;
   const time = dateFormat(timestamp);
 
@@ -87,14 +86,22 @@ export default function PostModal({
               {post.user.username}
             </span>
             {post.content}
+            {post.hashtags.length > 0 &&
+              post.hashtags.map(
+                (hashtag: string, i: number) =>
+                  hashtag && (
+                    <span key={i} className="text-gray-600 ml-2">
+                      #{hashtag}
+                    </span>
+                  )
+              )}
           </div>
-
           <p className="text-xs text-gray-600 w-full text-end">
             <time>{time}</time>
           </p>
         </div>
       </main>
-      <CommentForm postId={post.id}/>
+      <CommentForm postId={post.id} />
       {comment.length > 0 ? (
         <>
           {comment.map((item: any) => (
