@@ -126,7 +126,6 @@ const ChatLayoutComponent = async ({
                 height={32}
                 width={32}
                 className="w-8 h-8 rounded-full object-cover"
-                src="/a.jpg"
                 src={
                   currentUser.profilePic
                     ? process.env.NEXT_PUBLIC_AWS_BUCKET_URL +
