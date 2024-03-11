@@ -137,7 +137,7 @@ export default function PostModal({
 
       <div
         ref={wrapper}
-        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 py-8 overflow-auto"
+        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 py-8 pb-16 md:pb-0 overflow-auto"
       >
         <div>{BodyContent}</div>
       </div>

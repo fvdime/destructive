@@ -15,7 +15,7 @@ const UserBio = ({
   id: string;
 }) => {
   const userId = user.id;
-  console.log(userId)
+  console.log(userId);
 
   const isFollowing = user.followedBy.some(
     (follow: any) => follow.followerId === id
@@ -24,11 +24,11 @@ const UserBio = ({
   return (
     <main className="p-4 lg:py-4 antialiased w-full h-full border-b border-secondary mb-4">
       <div className="w-full f-full flex flex-row justify-start items-center gap-8 md:gap-16">
-        <div className="flex flex-col gap-2 w-48">
+        <div className="flex flex-col gap-2 w-48 items-end">
           <Image
-            height={128}
-            width={128}
-            className="w-32 h-32 rounded-full object-cover "
+            height={112}
+            width={112}
+            className="w-28 h-28 rounded-full object-cover "
             src={
               user.profilePic
                 ? process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${user.profilePic}`
@@ -41,21 +41,23 @@ const UserBio = ({
           <h2 className="text-xl text-start">{user.username}</h2>
 
           <ul className="flex space-x-8">
-            <li>
+            <li className="flex flex-col items-start md:flex-row md:gap-1">
               <span className="font-semibold mr-1">{user.post.length} </span>
-              {user.followedBy.length === 1 ? "post" : "posts"}
+              <span>{user.followedBy.length === 1 ? "post" : "posts"}</span>
             </li>
-            <li>
+            <li className="flex flex-col items-start md:flex-row md:gap-1">
               <span className="font-semibold mr-1">
-                {user.followedBy.length}{" "}
+                {user.followedBy.length}
               </span>
-              {user.followedBy.length === 1 ? "follower" : "followers"}
+              <span>
+                {user.followedBy.length === 1 ? "follower" : "followers"}
+              </span>
             </li>
-            <li>
+            <li className="flex flex-col items-start md:flex-row md:gap-1">
               <span className="font-semibold mr-1">
                 {user.following.length}
               </span>
-              following
+              <span>following</span>
             </li>
           </ul>
 
@@ -64,15 +66,26 @@ const UserBio = ({
             <h1 className="leading-tight">{user.bio ? user.bio : ""}</h1>
           </div>
           <div className="flex flex-row items-center gap-4 mt-4">
-            <FollowButton userId={userId} isFollowing={isFollowing} isOwn={isOwn} />
-            <Link href={isOwn ? "/user/edit" : "/messages"} className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md w-full px-8 py-1 font-bold">{isOwn ? "Edit Profile" : "Message"}</Link>
-            <form action={async (formData: FormData) => {
-              const userID = formData.get("userID")
+            <FollowButton
+              userId={userId}
+              isFollowing={isFollowing}
+              isOwn={isOwn}
+            />
+            <form
+              action={async (formData: FormData) => {
+                const userID = formData.get("userID");
 
-              await createConversation(userID)
-            }}>
-            <input type="hidden" name="userID" value={userId} />
-            <button type="submit">{isOwn ? "Edit Profile" : "Message"}</button>
+                await createConversation(userID);
+              }}
+              className="w-full"
+            >
+              <input type="hidden" name="userID" value={userId} />
+              <button
+                type="submit"
+                className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md w-full px-8 py-1 font-bold truncate"
+              >
+                {isOwn ? "Edit Profile" : "Message"}
+              </button>
             </form>
           </div>
         </div>

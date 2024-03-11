@@ -77,7 +77,7 @@ const Sidebar = ({currentUserId}: {currentUserId: string}) => {
     {
       id: 5,
       label: "Search",
-      href: "/search",
+      href: "/feed/s",
       svg: (
         <svg
           className="w-4 h-4 text-secondary"

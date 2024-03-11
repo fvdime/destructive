@@ -215,3 +215,33 @@ export async function UpdateProfileAction(
     };
   }
 }
+
+export const getSearchUsers = async (q: any, page: any) => {
+  const regex = new RegExp(q, "i")
+
+  const ITEM_PER_PAGE = 5
+
+  try {
+    const count = await prisma.user.count({
+      where: { username: {
+        contains: q,
+        mode: "insensitive"
+      }}
+    })
+
+    const users = await prisma.user.findMany({
+      where: {
+        username: {
+          contains: q,
+          mode: "insensitive"
+        }
+      },
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (page - 1) 
+    })
+
+    return { count, users }
+  } catch (error) {
+    throw new Error("Failed to fetch featured posts!")
+  }
+}
