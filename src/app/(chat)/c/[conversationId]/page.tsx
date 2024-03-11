@@ -22,7 +22,7 @@ export default async function SingleChatPage({ params }: any) {
       {messages?.map((message) => (
         <Chat key={message.id} message={message} />
         ))}
-      <MessageForm />
+      {/* <MessageForm /> */}
     </>
   )
 }
