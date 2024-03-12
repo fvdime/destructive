@@ -35,16 +35,17 @@
 ## Installation
 
 1. Clone the repo:
-   sh
-   git clone https://github.com/fvdime/moai.git
+   ```bash
+   git clone https://github.com/fvdime/destructive.git
+    ```
    
 2. Install NPM packages:
-   sh
+   ```bash
    npm install
+    ``` 
    
 3. Add .env file:
-
-   bash
+   ```bash
    DATABASE_URL="<DATABASE URL>"
    NEXT_PUBLIC_AWS_S3_ACCESS_KEY_ID="<AWS ACCESS KEY ID>"
    NEXT_PUBLIC_AWS_S3_SECRET_ACCESS_KEY="<AWS S3 SECRET ACCESS KEY>"
@@ -52,20 +53,20 @@
    NEXT_PUBLIC_AWS_S3_REGION="<AWS REGION>"
    NEXT_PUBLIC_AWS_BUCKET_URL="<AWS BUCKET URL>"
    NEXT_PUBLIC_JWT_SECRET_KEY="<JWT SECRET KEY>"
+    ```
    
+4. Prisma Commands:
 
-5. Prisma Commands:
+  ```bash
+  npx prisma db push
+  npx prisma generate
+  ``` 
 
-   bash
-   npx prisma db push
-   npx prisma generate
-   
+5. Run the development server:
 
-6. Run the development server:
-
-   bash
+   ```bash
    npm run dev
-   
+   ```   
 
 <p align="right">(<a href="#readme-top">↑</a>)</p>
 
