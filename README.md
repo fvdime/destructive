@@ -1,3 +1,112 @@
+# DESTRUCTIVE
+
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
+<a name="readme-top"></a>
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <h3 align="center">Destructive is an photo sharing social networking service.</h3>
+   <p align="center">
+    It allows users to upload media that can be organized by hashtags. Can follow other users, search users by username and edit profile. 
+  </p>
+
+  <p align="center">
+    <a href="https://destructive-five.vercel.app/">Live Demo</a>
+    ·
+    <a href="https://github.com/fvdime/destructive/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/fvdime/destructive/issues">Request Feature</a>
+  </p>
+</div>
+
+### Built With
+
+- Next JS
+- Next Server Actions
+- Amazon S3
+- Prisma
+- Mongo DB
+- Tailwind CSS
+
+<p align="right">(<a href="#readme-top">↑</a>)</p>
+
+## Installation
+
+1. Clone the repo:
+   sh
+   git clone https://github.com/fvdime/moai.git
+   
+2. Install NPM packages:
+   sh
+   npm install
+   
+3. Add .env file:
+
+   bash
+   DATABASE_URL="<DATABASE URL>"
+   NEXT_PUBLIC_AWS_S3_ACCESS_KEY_ID="<AWS ACCESS KEY ID>"
+   NEXT_PUBLIC_AWS_S3_SECRET_ACCESS_KEY="<AWS S3 SECRET ACCESS KEY>"
+   NEXT_PUBLIC_AWS_S3_BUCKET_NAME="<AWS S3 BUCKET NAME>"
+   NEXT_PUBLIC_AWS_S3_REGION="<AWS REGION>"
+   NEXT_PUBLIC_AWS_BUCKET_URL="<AWS BUCKET URL>"
+   NEXT_PUBLIC_JWT_SECRET_KEY="<JWT SECRET KEY>"
+   
+
+5. Prisma Commands:
+
+   bash
+   npx prisma db push
+   npx prisma generate
+   
+
+6. Run the development server:
+
+   bash
+   npm run dev
+   
+
+<p align="right">(<a href="#readme-top">↑</a>)</p>
+
+### Contact
+
+Contact: (https://faya-indol.vercel.app/de)
+
+Mail: fadime.dogrulj@gmail.com
+
+Project Link: [https://github.com/fvdime/destructive](https://github.com/fvdime/destructive)
+
+<p align="right">(<a href="#readme-top">↑</a>)</p>
+
+### License
+
+MIT License
+
+Copyright (c) 2024 faya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+<p align="right">(<a href="#readme-top">↑</a>)</p>
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -15,19 +124,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
