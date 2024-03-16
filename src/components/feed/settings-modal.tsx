@@ -1,9 +1,10 @@
 "use client";
 
+import { deletePost } from "@/actions/post.actions";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
-const SettingsModal = ({ isOwn }: { isOwn: boolean }) => {
+const SettingsModal = ({ isOwn, postId}: { isOwn: boolean, postId: string }) => {
   const [openModal, setOpenModal] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,12 +43,15 @@ const SettingsModal = ({ isOwn }: { isOwn: boolean }) => {
               </Link>
             </li>
             <li>
-              <Link
-                href="/"
+              <button
+                type="submit"
+                onClick={async() => {
+                  await deletePost(postId)
+                }}
                 className="w-full flex flex-row justify-start gap-1 items-center hover:bg-zinc-200 px-2.5 py-1.5 rounded mb-1 text-red-600"
               >
                 {isOwn ? "Delete" : "Help"}
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

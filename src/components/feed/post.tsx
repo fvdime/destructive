@@ -9,7 +9,7 @@ import SettingsModal from "./settings-modal";
 const Post = ({ post, userId }: { post: any; userId: string }) => {
   const timestamp = dateFormat(post.createdAt);
 
-  const userTID = post?.user.id
+  const userTID = post?.user.id;
   const isOwn = userId == userTID;
 
   return (
@@ -37,7 +37,7 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
                   {post.user.username}
                 </span>
               </Link>
-              <SettingsModal isOwn={isOwn}/>
+              <SettingsModal isOwn={isOwn} postId={post.id} />
             </div>
           </div>
           <div className="w-full h-96 relative my-2.5">
@@ -78,7 +78,9 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
               href={`/feed/${post.id}`}
               className="text-xs font-medium text-gray-400"
             >
-              View all {post.comment.length} comments
+              View {post.comment.length === 1 ? null : "all"}{" "}
+              {post.comment.length}{" "}
+              {post.comment.length === 1 ? "comment" : "comments"}
             </Link>
           )}
           <time className="text-xs font- text-gray-400 mt-2 w-full text-end">

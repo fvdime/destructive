@@ -3,11 +3,11 @@
 import React, { useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Button from "@/components/shared/button";
 import Image from "next/image";
 import Comment from "../comment";
 import CommentForm from "@/components/forms/comment-form";
 import { dateFormat } from "@/libs/date";
+import SettingsModal from "../settings-modal";
 
 export default function PostModal({
   post,
@@ -66,12 +66,7 @@ export default function PostModal({
                 {post.user.username}
               </Link>
             </div>
-            <div className="w-auto flex flex-row justify-center items-center gap-4">
-              <button type="button" className="text-sm text-gray-600 rotate-90">
-                ...
-                {/* <time>{date}</time> */}
-              </button>
-            </div>
+            <SettingsModal isOwn={isOwn} postId={post.id} />
           </div>
           <div className="w-full h-[80vh] relative mt-2.5 rounded-lg">
             <Image
