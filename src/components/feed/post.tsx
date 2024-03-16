@@ -46,7 +46,7 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
                 fill
                 alt="post image"
                 src={process.env.NEXT_PUBLIC_AWS_BUCKET_URL + `${post.image}`}
-                className="w-auto h-auto rounded-lg absolute object-contain"
+                className="w-fit h-fit rounded-lg absolute object-contain"
               />
             </Link>
           </div>

@@ -70,7 +70,7 @@ export default function PostModal({
             </div>
             <SettingsModal isOwn={isOwn} postId={post.id} type="post" />
           </div>
-          <div className="w-full h-[80vh] relative mt-2.5 rounded-lg">
+          <div className="w-full h-[40vh] md:h-[80vh] relative mt-2.5 rounded-lg">
             <Image
               fill
               alt="post image"
