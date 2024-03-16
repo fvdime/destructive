@@ -3,8 +3,13 @@
 import React, { useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import UpdateProfileForm from "@/components/forms/update-profile";
+import { deleteProfile } from "@/actions/user.action";
 
-export default function UpdateProfileModal({ currentUser }: { currentUser: any }) {
+export default function UpdateProfileModal({
+  currentUser,
+}: {
+  currentUser: any;
+}) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -23,11 +28,24 @@ export default function UpdateProfileModal({ currentUser }: { currentUser: any }
     [onDismiss, overlay]
   );
 
+  const FooterContent = (
+    <button
+      onClick={async () => {
+        const userId = currentUser.id;
+        await deleteProfile(userId);
+      }}
+      type="submit"
+      className="text-red-600 text-center mt-8 text-sm font-medium"
+    >
+      Delete Profile
+    </button>
+  );
+
   const BodyContent = (
     <div className="flex flex-col gap-4 w-full h-full max-w-screen-md mx-auto">
       <main className="p- lg:p-0 antialiased w-full h-full">
         <div className="w-full h-full flex flex-col gap-2">
-        <UpdateProfileForm currentUser={currentUser}/>
+          <UpdateProfileForm currentUser={currentUser} />
         </div>
       </main>
     </div>
@@ -63,9 +81,10 @@ export default function UpdateProfileModal({ currentUser }: { currentUser: any }
 
       <div
         ref={wrapper}
-        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 py-8 overflow-auto"
+        className="flex flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl px-8 pt-8 pb-24 overflow-auto"
       >
         <div>{BodyContent}</div>
+        {FooterContent}
       </div>
     </div>
   );
