@@ -7,9 +7,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">Destructive is an photo sharing social networking service.</h3>
+  <h3 align="center">Destructive is a photo sharing social media platform.</h3>
    <p align="center">
-    It allows users to upload media that can be organized by hashtags. Can follow other users, search users by username and edit profile. 
+    It allows users to upload media that can be organized by hashtags. Can follow other users, search users by username and edit profiles. 
   </p>
 
   <p align="center">
@@ -54,13 +54,13 @@
    NEXT_PUBLIC_AWS_BUCKET_URL="<AWS BUCKET URL>"
    NEXT_PUBLIC_JWT_SECRET_KEY="<JWT SECRET KEY>"
     ```
-   
+
 4. Prisma Commands:
 
-  ```bash
-  npx prisma db push
-  npx prisma generate
-  ``` 
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   ```   
 
 5. Run the development server:
 
@@ -72,7 +72,7 @@
 
 ### Contact
 
-Contact: (https://faya-indol.vercel.app/de)
+Contact: https://faya-indol.vercel.app/
 
 Mail: fadime.dogrulj@gmail.com
 
