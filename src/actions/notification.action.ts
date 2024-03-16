@@ -26,3 +26,12 @@ export const getNotifications = async (userId: string) => {
     throw new Error("Failed!")
   }
 }
+
+export const deleteNotification = async (notificationId: string) => {
+  await prisma.notification.delete({
+    where: { id: notificationId }
+  })
+
+  console.log("Deleted")
+  revalidatePath("/feed/notifications")
+}
