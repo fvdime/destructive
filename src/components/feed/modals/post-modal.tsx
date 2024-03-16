@@ -13,10 +13,12 @@ export default function PostModal({
   post,
   comment,
   isOwn,
+  userTID,
 }: {
   post: any;
   comment: any;
   isOwn: boolean;
+  userTID: string;
 }) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
@@ -66,7 +68,7 @@ export default function PostModal({
                 {post.user.username}
               </Link>
             </div>
-            <SettingsModal isOwn={isOwn} postId={post.id} type="post"/>
+            <SettingsModal isOwn={isOwn} postId={post.id} type="post" />
           </div>
           <div className="w-full h-[80vh] relative mt-2.5 rounded-lg">
             <Image
@@ -100,7 +102,7 @@ export default function PostModal({
       {comment.length > 0 ? (
         <>
           {comment.map((item: any) => (
-            <Comment key={item.id} item={item} isOwn={isOwn} />
+            <Comment key={item.id} item={item} userTID={userTID} />
           ))}
         </>
       ) : (

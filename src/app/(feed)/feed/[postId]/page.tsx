@@ -18,7 +18,7 @@ export default async function PostPage({ params }: any) {
 
   return (
     <>
-      <PostModal post={post} isOwn={isOwn} comment={comment} />
+      <PostModal post={post} isOwn={isOwn} comment={comment} userTID={userTID}/>
     </>
   );
 }
