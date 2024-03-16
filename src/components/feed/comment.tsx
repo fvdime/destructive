@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getComments } from "@/actions/comment.action";
 import { dateFormat } from "@/libs/date";
+import SettingsModal from "./settings-modal";
 
 const Comment = async ({ item, isOwn }: { item: any; isOwn: boolean }) => {
   const timeStamp = item?.createdAt;
@@ -30,11 +31,12 @@ const Comment = async ({ item, isOwn }: { item: any; isOwn: boolean }) => {
             <p className="font-semibold text-sm">{item.user.username}</p>
           </Link>
         </div>
-        <p className="text-xs text-gray-600">
-          <time>{time}</time>
-        </p>
+        <SettingsModal commentId={item.id} type="comment" isOwn={isOwn}/>
       </div>
       <p>{item.comment}</p>
+        <p className="text-xs text-gray-600 text-end">
+          <time>{time}</time>
+        </p>
     </div>
   );
 };

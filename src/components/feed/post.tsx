@@ -4,9 +4,13 @@ import Link from "next/link";
 import LikeButton from "./like-button";
 import { dateFormat } from "@/libs/date";
 import BookMarkButton from "./bookmark-button";
+import SettingsModal from "./settings-modal";
 
 const Post = ({ post, userId }: { post: any; userId: string }) => {
   const timestamp = dateFormat(post.createdAt);
+
+  const userTID = post?.user.id;
+  const isOwn = userId == userTID;
 
   return (
     <div className="w-full h-full mb-4 px-2 text-black">
@@ -33,9 +37,7 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
                   {post.user.username}
                 </span>
               </Link>
-              <span className="text-sm font-normal text-gray-500 rotate-90 cursor-pointer">
-                ...
-              </span>
+              <SettingsModal isOwn={isOwn} postId={post.id} type="post" />
             </div>
           </div>
           <div className="w-full h-96 relative my-2.5">
@@ -76,7 +78,9 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
               href={`/feed/${post.id}`}
               className="text-xs font-medium text-gray-400"
             >
-              View all {post.comment.length} comments
+              View {post.comment.length === 1 ? null : "all"}{" "}
+              {post.comment.length}{" "}
+              {post.comment.length === 1 ? "comment" : "comments"}
             </Link>
           )}
           <time className="text-xs font- text-gray-400 mt-2 w-full text-end">

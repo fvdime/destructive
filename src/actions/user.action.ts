@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import uploadImage from '@/libs/upload-image';
 import { redirect } from 'next/navigation'
+import { Logout } from './auth.actions';
 
 const profileSchema = z.object({
   username: z.string().min(1),
@@ -223,10 +224,12 @@ export const getSearchUsers = async (q: any, page: any) => {
 
   try {
     const count = await prisma.user.count({
-      where: { username: {
-        contains: q,
-        mode: "insensitive"
-      }}
+      where: {
+        username: {
+          contains: q,
+          mode: "insensitive"
+        }
+      }
     })
 
     const users = await prisma.user.findMany({
@@ -237,11 +240,35 @@ export const getSearchUsers = async (q: any, page: any) => {
         }
       },
       take: ITEM_PER_PAGE,
-      skip: ITEM_PER_PAGE * (page - 1) 
+      skip: ITEM_PER_PAGE * (page - 1)
     })
 
     return { count, users }
   } catch (error) {
     throw new Error("Failed to fetch featured posts!")
   }
+}
+
+export const deleteProfile = async (userId: string) => {
+  await prisma.comment.deleteMany({
+    where: { userId: userId }
+  })
+
+  await prisma.post.deleteMany({
+    where: { userId: userId }
+  })
+
+  await prisma.notification.deleteMany({
+    where: { userId: userId }
+  })
+
+  await prisma.like.deleteMany({
+    where: { userId: userId }
+  })
+
+  await prisma.user.delete({
+    where: { id: userId }
+  })
+
+  await Logout()
 }

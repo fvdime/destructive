@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { GetUserById } from "./user.action";
 import uploadImage from "@/libs/upload-image";
 import { revalidatePath } from 'next/cache'
-import { getToken, getUserIdFromToken } from "@/libs/sign-token";import { redirect } from "next/navigation";
+import { getToken, getUserIdFromToken } from "@/libs/sign-token"; import { redirect } from "next/navigation";
 ;
 
 const postSchema = z.object({
@@ -59,18 +59,18 @@ export const createPost = async (formData: FormData) => {
   redirect(`/feed/${post.id}`)
 }
 
-export const deletePost = async ({ id, path }: { id: any; path: string }) => {
-  try {
-    await prisma.post.delete({
-      where: { id }
-    });
+export const deletePost = async (postId: string) => {
+  // deleting comments before the post 
+  await prisma.comment.deleteMany({
+    where: { postId }
+  })
 
-    console.log("Deleted post from database");
-    revalidatePath(path)
-  } catch (error) {
-    console.error("Error deleting post:", error);
-    throw new Error("Failed to delete post");
-  }
+  await prisma.post.delete({
+    where: { id: postId }
+  });
+
+  console.log("Deleted post from database");
+  redirect("/feed")
 };
 
 export const updatePost = async ({ formData, id, path }: { formData: FormData; id: any; path: string }) => {

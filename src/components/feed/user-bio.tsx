@@ -71,22 +71,31 @@ const UserBio = ({
               isFollowing={isFollowing}
               isOwn={isOwn}
             />
-            <form
-              action={async (formData: FormData) => {
-                const userID = formData.get("userID");
-
-                await createConversation(userID);
-              }}
-              className="w-full"
-            >
-              <input type="hidden" name="userID" value={userId} />
-              <button
-                type="submit"
+            {isOwn ? (
+              <Link
+                href="/user/edit"
                 className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md w-full px-8 py-1 font-bold truncate"
               >
-                {isOwn ? "Edit Profile" : "Message"}
-              </button>
-            </form>
+                Edit Profile
+              </Link>
+            ) : (
+              <form
+                action={async (formData: FormData) => {
+                  const userID = formData.get("userID");
+
+                  await createConversation(userID);
+                }}
+                className="w-full"
+              >
+                <input type="hidden" name="userID" value={userId} />
+                <button
+                  type="submit"
+                  className="rounded text-center text-semibold border border-secondary transition-all ease-in duration-300 text-sm hover:shadow-md w-full px-8 py-1 font-bold truncate"
+                >
+                  Message
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

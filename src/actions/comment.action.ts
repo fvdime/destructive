@@ -137,18 +137,13 @@ export async function createCommentAction(
   }
 }
 
-export const deleteComment = async ({ id, path }: { id: any; path: string }) => {
-  try {
-    await prisma.comment.delete({
-      where: { id }
-    });
+export const deleteComment = async ({ commentId, path }: { commentId: string; path: string }) => {
+  await prisma.comment.delete({
+    where: { id: commentId }
+  });
 
-    console.log("Deleted comment from database");
-    revalidatePath(path)
-  } catch (error) {
-    console.error("Error deleting comment:", error);
-    throw new Error("Failed to delete comment");
-  }
+  console.log("Deleted comment from database");
+  revalidatePath(path)
 };
 
 export const updateComment = async ({ formData, postId, path }: { formData: FormData; postId: any; path: string }) => {
