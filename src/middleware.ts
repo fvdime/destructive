@@ -10,11 +10,6 @@ interface AuthenticatedRequest extends NextRequest {
 
 let redirectToLogin = false;
 
-const AUTH_PAGES = ['/login', '/register'];
-
-const isAuthPages = (url: string) =>
-    AUTH_PAGES.some((page) => page.startsWith(url));
-
 export default async function middleware(req: NextRequest) {
   const { nextUrl, cookies } = req;
 
@@ -28,7 +23,7 @@ export default async function middleware(req: NextRequest) {
     return
   }
 
-  if (nextUrl.pathname === "/" || nextUrl.pathname === "/register"  && !token) {
+  if (nextUrl.pathname === "/" || nextUrl.pathname === "/register" && !token) {
     return NextResponse.next();
   }
 
@@ -47,6 +42,7 @@ export default async function middleware(req: NextRequest) {
     }
   } catch (error) {
     console.error("Token verification failed:", error);
+    redirectToLogin = true;
 
     console.log("Redirecting to auth");
     return NextResponse.redirect(
