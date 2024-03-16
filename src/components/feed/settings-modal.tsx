@@ -1,10 +1,18 @@
 "use client";
 
+import { deleteComment } from "@/actions/comment.action";
 import { deletePost } from "@/actions/post.actions";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 
-const SettingsModal = ({ isOwn, postId}: { isOwn: boolean, postId: string }) => {
+interface SettingsModalProps {
+  isOwn: boolean,
+  postId?: string,
+  commentId?: string,
+  type: "comment" | "post"
+}
+
+const SettingsModal = ({ isOwn, postId, type, commentId}: SettingsModalProps) => {
   const [openModal, setOpenModal] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,14 +47,20 @@ const SettingsModal = ({ isOwn, postId}: { isOwn: boolean, postId: string }) => 
                 href="/"
                 className="w-full flex flex-row justify-start gap-1 items-center hover:bg-zinc-200 p-1 rounded mb-1 px-2.5 py-1.5"
               >
-                {isOwn ? "Edit Post" : "Report"}
+                {isOwn ? "Edit" : "Report"}
               </Link>
             </li>
             <li>
               <button
                 type="submit"
                 onClick={async() => {
-                  await deletePost(postId)
+                  if (type === "post") { 
+                    await deletePost(postId!)
+                  } else {
+                    const path = `/feed/${postId}`
+                    // @ts-ignore
+                    await deleteComment({ commentId, path})
+                  }
                 }}
                 className="w-full flex flex-row justify-start gap-1 items-center hover:bg-zinc-200 px-2.5 py-1.5 rounded mb-1 text-red-600"
               >

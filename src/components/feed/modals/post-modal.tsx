@@ -66,7 +66,7 @@ export default function PostModal({
                 {post.user.username}
               </Link>
             </div>
-            <SettingsModal isOwn={isOwn} postId={post.id} />
+            <SettingsModal isOwn={isOwn} postId={post.id} type="post"/>
           </div>
           <div className="w-full h-[80vh] relative mt-2.5 rounded-lg">
             <Image

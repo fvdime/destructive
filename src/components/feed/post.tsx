@@ -37,7 +37,7 @@ const Post = ({ post, userId }: { post: any; userId: string }) => {
                   {post.user.username}
                 </span>
               </Link>
-              <SettingsModal isOwn={isOwn} postId={post.id} />
+              <SettingsModal isOwn={isOwn} postId={post.id} type="post" />
             </div>
           </div>
           <div className="w-full h-96 relative my-2.5">
