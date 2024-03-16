@@ -41,7 +41,7 @@ export default function UserModal({
           <>
             {user.post.map((item: any) => (
               <div
-                className="h-64 w-full relative hover:brightness-75 duration-300 translation ease"
+                className="h-36 md:h-64 w-full relative hover:brightness-75 duration-300 translation ease"
                 key={item.id}
               >
                 <Link href={`/feed/${item.id}`}>

@@ -23,8 +23,8 @@ const UserBio = ({
 
   return (
     <main className="p-4 lg:py-4 antialiased w-full h-full border-b border-secondary mb-4">
-      <div className="w-full f-full flex flex-row justify-start items-center gap-8 md:gap-16">
-        <div className="flex flex-col gap-2 w-48 items-end">
+      <div className="w-full h-full flex flex-col md:flex-row justify-start items-center gap-8 md:gap-16">
+        <div className="flex flex-col gap-2 w-48 items-center md:items-end">
           <Image
             height={112}
             width={112}

@@ -8,7 +8,7 @@ export default function BottomNavigation({currentUserId}: { currentUserId: strin
         <div className="grid h-full w-full grid-cols-5 mx-auto">
           <Link
           href="/feed"
-            className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-100 group transition duration-300 ease"
+            className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-100 group transition duration-300 ease"
           >
             <svg
               className="w-5 h-5 mb-1 text-gray-500 group-hover:text-blue-600"
@@ -88,7 +88,7 @@ export default function BottomNavigation({currentUserId}: { currentUserId: strin
           </Link>
           <Link
             href={`/user/${currentUserId}`}
-            className="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-100 group transition duration-300 ease"
+            className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-100 group transition duration-300 ease"
           >
             <svg
               className="w-6 h-6 text-gray-500 group-hover:text-blue-600"

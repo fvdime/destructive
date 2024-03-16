@@ -1,13 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getComments } from "@/actions/comment.action";
 import { dateFormat } from "@/libs/date";
 import SettingsModal from "./settings-modal";
 
-const Comment = async ({ item, isOwn }: { item: any; isOwn: boolean }) => {
+const Comment = async ({ item, userTID }: { item: any; userTID: string }) => {
   const timeStamp = item?.createdAt;
   const time = dateFormat(timeStamp);
+
+  const userId = item.user.id;
+  const isOwn = userTID === userId;
 
   return (
     <div className="px-2 pb-4 border-b" key={item.id}>
@@ -31,12 +33,12 @@ const Comment = async ({ item, isOwn }: { item: any; isOwn: boolean }) => {
             <p className="font-semibold text-sm">{item.user.username}</p>
           </Link>
         </div>
-        <SettingsModal commentId={item.id} type="comment" isOwn={isOwn}/>
+        <SettingsModal commentId={item.id} type="comment" isOwn={isOwn} />
       </div>
       <p>{item.comment}</p>
-        <p className="text-xs text-gray-600 text-end">
-          <time>{time}</time>
-        </p>
+      <p className="text-xs text-gray-600 text-end">
+        <time>{time}</time>
+      </p>
     </div>
   );
 };

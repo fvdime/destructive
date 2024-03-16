@@ -9,9 +9,11 @@ export default function ChatPage() {
         </h1>
       </header>
       <div className="w-full h-[80vh] flex flex-col justify-center items-center gap-4 overflow-y-hidden">
-        <h1 className="text-7xl font-bold text-gray-300">ฅ^._.^ฅ</h1>
-        <h1 className="text-lg text-gray-700 font-medium">
-          Create or select a chat
+        <h1 className="text-7xl font-bold text-pink-200">ฅ^._.^ฅ</h1>
+        <h1 className="text-lg text-zinc-700 font-medium text-center">
+          {/* Create or select a chat */}
+          Work in progress <br />
+          Let&apos;s not try here.
         </h1>
       </div>
     </>
